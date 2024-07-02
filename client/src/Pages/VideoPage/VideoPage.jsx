@@ -48,8 +48,8 @@ function VideoPage() {
         <div className="container2_videoPage">
           <div className="video_display_screen_videoPage">
             <video
-              src={`http://localhost:5500/${vv?.filePath}`}
-              // src={`https://youtubeclone5031.herokuapp.com/${vv?.filePath}`}
+              // src={`http://localhost:5500/${vv?.filePath}`}
+              src={`https://youtubeclone3-8tav.onrender.com/${vv?.filePath}`}
               className={"video_ShowVideo_videoPage"}
               controls
               // autoPlay
