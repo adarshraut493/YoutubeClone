@@ -13,9 +13,10 @@ import { getAllVideo } from "./actions/video";
 import { getAlllikedVideo } from "./actions/likedVideo";
 import { getAllwatchLater } from "./actions/watchLater";
 import { getAllHistory } from "./actions/History";
+
 function App() {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(fetchAllChanel());
     dispatch(getAllVideo());
@@ -27,6 +28,7 @@ function App() {
   const [toggleDrawerSidebar, setToggleDrawerSidebar] = useState({
     display: "none",
   });
+
   const toggleDrawer = () => {
     if (toggleDrawerSidebar.display === "none") {
       setToggleDrawerSidebar({
@@ -38,14 +40,17 @@ function App() {
       });
     }
   };
+  const [points, setPoints] = useState(0)
   const [vidUploadPage, setVidUploadPage] = useState(false);
   const [EditCreateChanelBtn, setEditCreateChanelBtn] = useState(false);
+
   return (
     <Router>
-      {vidUploadPage && <VideoUpload  setVidUploadPage={setVidUploadPage}/>}
+      {vidUploadPage && <VideoUpload setVidUploadPage={setVidUploadPage} />}
       {EditCreateChanelBtn && (
         <CreateEditChanel setEditCreateChanelBtn={setEditCreateChanelBtn} />
       )}
+
       <Navbar
         setEditCreateChanelBtn={setEditCreateChanelBtn}
         toggleDrawer={toggleDrawer}
@@ -56,7 +61,11 @@ function App() {
         toggleDrawerSidebar={toggleDrawerSidebar}
       />
 
-      <AllRoutes setVidUploadPage={setVidUploadPage} setEditCreateChanelBtn={setEditCreateChanelBtn} />
+      <AllRoutes
+        points={points} setPoints={setPoints}
+        setVidUploadPage={setVidUploadPage}
+        setEditCreateChanelBtn={setEditCreateChanelBtn}
+      />
     </Router>
   );
 }

@@ -1,14 +1,15 @@
-import React from "react";
-import { FaEdit, FaUpload } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaEdit, FaUpload, FaHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
+
 import "./DescribeChanel.css";
-function DecribeChanel({ setEditCreateChanelBtn, Cid,setVidUploadPage }) {
+function DecribeChanel({ points, setEditCreateChanelBtn, Cid, setVidUploadPage }) {
   const chanels = useSelector((state) => state?.chanelReducers);
 
-  // console.log(Cid)
   const currentChanel = chanels.filter((c) => c._id === Cid)[0];
 
   const CurrentUser = useSelector((state) => state?.currentUserReducer);
+
 
   return (
     <div className="container3_chanel">
@@ -30,9 +31,13 @@ function DecribeChanel({ setEditCreateChanelBtn, Cid,setVidUploadPage }) {
             <FaEdit />
             <b> Edit Chanel</b>
           </p>
-          <p className="uploadbtn_chanel" onClick={()=>setVidUploadPage(true)}>
+          <p className="uploadbtn_chanel" onClick={() => setVidUploadPage(true)}>
             <FaUpload />
             <b> Upload Video</b>
+          </p>
+          <p className="pointsbtn_chanel">
+            <FaHeart />
+            <b> {points} Points</b>
           </p>
         </>
       )}

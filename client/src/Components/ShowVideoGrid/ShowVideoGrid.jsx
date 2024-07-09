@@ -1,7 +1,7 @@
 import React from 'react'
 import ShowVideo from '../ShowVideo/ShowVideo'
 import './ShowVideoGrid.css'
-function ShowVideoGrid({vids}) {
+function ShowVideoGrid({vids,points, setPoints }) {
   return (
     <div className='Container_ShowVideoGrid'>
         {
@@ -9,7 +9,7 @@ function ShowVideoGrid({vids}) {
             {
                 return (
                     <div key={vi._id} className="video_box_app">
-                        <ShowVideo vid={vi}/>
+                      <ShowVideo vid={vi} points={points} setPoints={setPoints}  />
                     </div>
                 )
             })  

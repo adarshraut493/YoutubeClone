@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Home from "../Pages/Home/Home";
 import { Routes, Route } from "react-router-dom";
 import Library from "../Pages/Library/Library";
@@ -9,7 +9,8 @@ import LikedVideo from "../Pages/LikedVideo/LikedVideo";
 import VideoPage from "../Pages/VideoPage/VideoPage";
 import Chanel from "../Pages/Chanel/Chanel";
 import Search from "../Pages/Search/Search";
-function AllRoutes({ setEditCreateChanelBtn,setVidUploadPage }) {
+function AllRoutes({ points, setPoints, setEditCreateChanelBtn, setVidUploadPage }) {
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -22,7 +23,7 @@ function AllRoutes({ setEditCreateChanelBtn,setVidUploadPage }) {
       <Route path="/seacrh/:searchQuery" element={<Search />} />
       <Route
         path="/chanel/:Cid"
-        element={<Chanel 
+        element={<Chanel points={points} setPoints={setPoints}
           setVidUploadPage={setVidUploadPage}
           setEditCreateChanelBtn={setEditCreateChanelBtn} />}
       />
