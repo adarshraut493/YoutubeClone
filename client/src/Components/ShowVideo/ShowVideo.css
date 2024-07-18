@@ -3,7 +3,7 @@
     margin: 0.4rem;
     margin-bottom: 0;
     width: calc(100% - 0.8rem);
-    height: 70%;
+    height: 53%;
     border: 1px solid rgba(128, 128, 128, 0.532);
 }
 
@@ -37,30 +37,20 @@
     display: flex;
 }
 
-/* .pointsbtn {
-    background-color: blue;
-    padding: 0.2rem;
-    width: 7rem;
-    border: 2px solid transparent;
-    border-radius: 0.4rem;
-    color: white;
+.pointsbtn {
+    padding: 10px;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 5px;
     cursor: pointer;
-    } */
-    .pointsbtn {
-        padding: 10px;
-        border: 1px solid rgb(255, 255, 255);
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-left: 4rem;
-  }
-  
-  .unwatched {
+    transition: all 0.3s ease;
+    margin-left: 4rem;
+}
+
+.unwatched {
     color: rgb(255, 255, 255);
-  }
-  
-  .watched {
+}
+
+.watched {
     border: grey;
     color: grey;
-  }
-  
+}

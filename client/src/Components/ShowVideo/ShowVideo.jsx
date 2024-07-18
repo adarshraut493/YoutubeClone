@@ -13,6 +13,8 @@ function ShowVideo({ vid, points, setPoints }) {
       <Link to={`/videopage/${vid?._id}`} >
         <video
           src={`http://localhost:5500/${vid.filePath}`}
+          // src={` https://youtubeclone1234.onrender.com/${vid.filePath}`}
+         
           className="video_ShowVideo"
           onClick={increasePoints}
         />

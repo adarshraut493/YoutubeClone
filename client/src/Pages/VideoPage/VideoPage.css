@@ -86,11 +86,52 @@
   width: calc(100vw - 4.5rem - 70vw);
   padding: 0 1rem;
 }
+/* ///////? */
+/* .container_videoPage {
+  position: relative;
+}
+
+.container2_videoPage {
+  position: relative;
+}
+
+.topRightButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+}
+
+.topRightButton button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.video_display_screen_videoPage {
+  position: relative;
+}
+
+.video_ShowVideo_videoPage {
+  width: 100%;
+  height: auto;
+} */
+/* Add your other styles as needed */
+
+/* VideoPage.css */
+.weather-icon {
+  position: absolute;
+  top: 14%;
+  right: 35%;
+  font-size: 2rem;
+  z-index: 10;
+  padding: 50px;
+  border-radius: 50%;
+}
 
 
 
 
-
-
-/* ///////////////////////////////////////////////////////////////////////// */
 

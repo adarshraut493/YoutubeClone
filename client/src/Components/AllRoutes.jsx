@@ -9,6 +9,7 @@ import LikedVideo from "../Pages/LikedVideo/LikedVideo";
 import VideoPage from "../Pages/VideoPage/VideoPage";
 import Chanel from "../Pages/Chanel/Chanel";
 import Search from "../Pages/Search/Search";
+import RoomPage from "./Room";
 function AllRoutes({ points, setPoints, setEditCreateChanelBtn, setVidUploadPage }) {
 
   return (
@@ -27,6 +28,7 @@ function AllRoutes({ points, setPoints, setEditCreateChanelBtn, setVidUploadPage
           setVidUploadPage={setVidUploadPage}
           setEditCreateChanelBtn={setEditCreateChanelBtn} />}
       />
+      <Route path="/room/:roomId" element={<RoomPage />} />
     </Routes>
   );
 }
