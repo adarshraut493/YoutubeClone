@@ -133,7 +133,7 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn }) {
       </div>
       {AuthBtn && (
         <Auth
-          setEditCreateChanelBtn={setEditCreateChanelBtn}
+        setEditCreateChanelBtn={setEditCreateChanelBtn}
           setAuthBtn={setAuthBtn}
           User={CurrentUser}
         />

@@ -43,7 +43,7 @@ function Auth({ User, setAuthBtn, setEditCreateChanelBtn }) {
                 type="submit"
                 className="btn_Auth"
                 value="Create Your Chanel"
-                onClick={() => setEditCreateChanelBtn(true)}
+                onClick={() =>setEditCreateChanelBtn(true)}
               />
             </>
           )}

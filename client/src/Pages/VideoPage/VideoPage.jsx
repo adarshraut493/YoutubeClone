@@ -15,6 +15,15 @@ function VideoPage({ points, setPoints }) {
   const commentsRef = useRef(null); // Reference to comments section
   const [location, setLocation] = useState(""); // State for location name
   const [temperature, setTemperature] = useState(""); // State for temperature
+  const [watchedVideos, setWatchedVideos] = useState(() => {
+    const savedWatchedVideos = localStorage.getItem("watchedVideos");
+    try {
+      return savedWatchedVideos ? JSON.parse(savedWatchedVideos) : [];
+    } catch (error) {
+      console.error("Error parsing watched videos:", error);
+      return []; // Fallback to empty array if parsing fails
+    }
+  }); // State to track watched videos
   const dispatch = useDispatch(); // Redux dispatch
   const CurrentUser = useSelector((state) => state?.currentUserReducer); // Get current user from Redux store
   const navigate = useNavigate(); // Navigation hook from React Router
@@ -51,6 +60,19 @@ function VideoPage({ points, setPoints }) {
     }
     handleViews();
   }, [CurrentUser, handleHistory, handleViews]);
+
+  // Update watchedVideos state from localStorage
+  useEffect(() => {
+    const savedWatchedVideos = localStorage.getItem("watchedVideos");
+    try {
+      const parsedVideos = savedWatchedVideos ? JSON.parse(savedWatchedVideos) : [];
+      if (Array.isArray(parsedVideos)) {
+        setWatchedVideos(parsedVideos);
+      }
+    } catch (error) {
+      console.error("Error parsing watched videos:", error);
+    }
+  }, []);
 
   // Function to fetch weather data
   const fetchWeather = async (latitude, longitude) => {
@@ -160,17 +182,33 @@ function VideoPage({ points, setPoints }) {
   // Function to find the next video
   const getNextVideoId = () => {
     const currentIndex = vids?.data.findIndex((video) => video._id === vid);
-    const nextIndex = (currentIndex - 1) % vids?.data.length; // Loop back to the first video if at the end
-    if (currentIndex === vids?.data.length + 1) {
-      // If at the last video, loop to the first video
-      return vids?.data[0]._id;
-    }
+    const nextIndex = (currentIndex + 1) % vids?.data.length; // Loop back to the first video if at the end
+
     return vids?.data[nextIndex]?._id;
   };
 
   const increasePoints = () => {
-    setPoints(points + 5);
-    console.log(points);
+    const savedWatchedVideos = localStorage.getItem("watchedVideos");
+    let watchedVideos = [];
+    try {
+      watchedVideos = savedWatchedVideos ? JSON.parse(savedWatchedVideos) : [];
+    } catch (error) {
+      console.error("Error parsing watched videos:", error);
+    }
+
+    if (!Array.isArray(watchedVideos)) {
+      watchedVideos = [];
+    }
+
+    if (!watchedVideos.includes(vid)) {
+      // Check if the video has already been watched
+      setPoints(points + 5);
+      console.log(`Points increased to: ${points + 5}`);
+      watchedVideos.push(vid); // Add video ID to watched list
+      localStorage.setItem("watchedVideos", JSON.stringify(watchedVideos)); // Update localStorage
+    } else {
+      console.log("Points already awarded for this video.");
+    }
   };
 
   return (
@@ -179,7 +217,9 @@ function VideoPage({ points, setPoints }) {
         <div className="video_display_screen_videoPage">
           <video
             ref={videoRef}
-            src={`http://localhost:5500/${vv?.filePath}`} // Video path
+            // src={`http://localhost:5500/${vv?.filePath}`} // Video path
+            src={`https://youtubeclone12345678.onrender.com/${vv?.filePath}`} // Video path
+            
             className="video_ShowVideo_videoPage"
             controls
           ></video>
