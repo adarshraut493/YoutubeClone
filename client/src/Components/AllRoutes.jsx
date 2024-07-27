@@ -20,11 +20,12 @@ function AllRoutes({ points, setPoints, setEditCreateChanelBtn, setVidUploadPage
       <Route path="/watchlater" element={<WatchLater />} />
       <Route path="/likedvideo" element={<LikedVideo />} />
       <Route path="/yourvideos" element={<YourVideo />} />
-      <Route path="/videopage/:vid" element={<VideoPage />} />
+      <Route path="/videopage/:vid" element={<VideoPage points={points} setPoints={setPoints}/>} />
       <Route path="/seacrh/:searchQuery" element={<Search />} />
       <Route
         path="/chanel/:Cid"
-        element={<Chanel points={points} setPoints={setPoints}
+        element={<Chanel 
+          points={points} setPoints={setPoints}
           setVidUploadPage={setVidUploadPage}
           setEditCreateChanelBtn={setEditCreateChanelBtn} />}
       />

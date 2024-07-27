@@ -6,7 +6,6 @@ export const uploadVideo = (videoData) => async (dispatch) => {
     const {data}= await api.uploadVideo(fileData, fileOptions)
     dispatch({type:'POST_VIDEO',data})
     dispatch(getAllVideo())
-    
   } catch (error) {
     alert(error.response.data.message)
   }

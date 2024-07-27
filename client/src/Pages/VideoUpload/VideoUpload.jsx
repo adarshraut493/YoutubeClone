@@ -89,22 +89,22 @@ function VideoUpload({ setVidUploadPage }) {
             className="ibox_vidupload btn_vidUpload"
           />
         </div>
-        <div style={{ width: "10rem", height: "10rem" , paddingLeft: '6rem'}}>
-            <CircularProgressbar
-              value={progress}
-              text={`${progress}%`}
-              styles={buildStyles({
-                rotation: 0.25,
-                strokeLinecap: "butt",
-                textSize: "20px",
-                pathTransitionDuration: 0.5,
-                pathColor: `rgba(255,255,255,${progress / 100})`,
-                textColor: "#f88",
-                trailColor: "#adff2f",
-                backgroundColor: "#3e98c7",
-              })}
-            />
-          </div>
+        <div className="loader ibox_div_vidupload">
+          <CircularProgressbar
+            value={progress}
+            text={`${progress}`}
+            styles={buildStyles({
+              rotation: 0.25,
+              strokeLinecap: "butt",
+              textSize: "20px",
+              pathTransitionDuration: 0.5,
+              pathColor: `rgba(255,255,255,${progress / 100})`,
+              textColor: "#f88",
+              trailColor: "#adff2f",
+              backgroundColor: "#3e98c7",
+            })}
+          />
+        </div>
       </div>
     </div>
   );

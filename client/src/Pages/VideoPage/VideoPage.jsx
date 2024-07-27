@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Comments from "../../Components/Comments/Comments";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -7,21 +7,26 @@ import LikeWatchLaterSaveBtns from "./LikeWatchLaterSaveBtns";
 import "./VideoPage.css";
 import { addToHistory } from "../../actions/History";
 import { viewVideo } from "../../actions/video";
-import axios from 'axios';
+import axios from "axios";
 
-function VideoPage() {
-  const { vid } = useParams();
-  const videoRef = useRef(null);
-  const [tapCount, setTapCount] = useState(0);
-  const [location, setLocation] = useState('');
-  const [temperature, setTemperature] = useState('');
+function VideoPage({ points, setPoints }) {
+  const { vid } = useParams(); // Get current video ID from URL
+  const videoRef = useRef(null); // Reference to video player
+  const commentsRef = useRef(null); // Reference to comments section
+  const [location, setLocation] = useState(""); // State for location name
+  const [temperature, setTemperature] = useState(""); // State for temperature
+  const dispatch = useDispatch(); // Redux dispatch
+  const CurrentUser = useSelector((state) => state?.currentUserReducer); // Get current user from Redux store
+  const navigate = useNavigate(); // Navigation hook from React Router
 
-  const vids = useSelector((state) => state.videoReducer);
-  const vv = vids?.data.filter((q) => q._id === vid)[0];
-  const dispatch = useDispatch();
-  const CurrentUser = useSelector((state) => state?.currentUserReducer);
+  const vids = useSelector((state) => state.videoReducer); // Get videos from Redux store
 
+  // Find current video data
+  const vv = vids?.data.find((q) => q._id === vid);
+
+  // Function to add the video to history
   const handleHistory = useCallback(() => {
+    if (!CurrentUser) return; // Ensure user is logged in
     dispatch(
       addToHistory({
         videoId: vid,
@@ -30,12 +35,16 @@ function VideoPage() {
     );
   }, [dispatch, vid, CurrentUser]);
 
+  // Function to increase the view count of the video
   const handleViews = useCallback(() => {
-    dispatch(viewVideo({
-      id: vid
-    }));
+    dispatch(
+      viewVideo({
+        id: vid,
+      })
+    );
   }, [dispatch, vid]);
 
+  // UseEffect hook to add the video to history and increase view count on initial render
   useEffect(() => {
     if (CurrentUser) {
       handleHistory();
@@ -43,24 +52,31 @@ function VideoPage() {
     handleViews();
   }, [CurrentUser, handleHistory, handleViews]);
 
+  // Function to fetch weather data
   const fetchWeather = async (latitude, longitude) => {
     try {
-      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
-        params: {
-          lat: latitude,
-          lon: longitude,
-          appid: "a35fc364b21d6422b38db06ce159175f",
-          units: 'metric'
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather`,
+        {
+          params: {
+            lat: latitude,
+            lon: longitude,
+            appid: "a35fc364b21d6422b38db06ce159175f",
+            units: "metric",
+          },
         }
-      });
+      );
       setTemperature(response.data.main.temp);
       setLocation(response.data.name);
-      alert(`Location: ${response.data.name}, Temperature: ${response.data.main.temp}°C`);
+      alert(
+        `Location: ${response.data.name}, Temperature: ${response.data.main.temp}°C`
+      );
     } catch (error) {
       console.error("Error fetching weather data:", error);
     }
   };
 
+  // Function to get location and fetch weather data
   const fetchLocationAndWeather = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -72,80 +88,90 @@ function VideoPage() {
     );
   };
 
-  useEffect(() => {
-    const videoElement = videoRef.current;
-    let timer;
-    let lastTap = 0;
+  // Function to handle double tap events
+  const handleDoubleTap = (direction) => {
+    const currentTime = videoRef.current.currentTime;
+    if (direction === "forward") {
+      videoRef.current.currentTime = currentTime + 10; // Skip 10 seconds forward
+    } else if (direction === "backward") {
+      videoRef.current.currentTime = currentTime - 10; // Skip 10 seconds backward
+    }
+  };
 
-    const handleGesture = (e) => {
-      const currentTime = new Date().getTime();
-      const tapInterval = currentTime - lastTap;
-      lastTap = currentTime;
-      setTapCount((prev) => prev + 1);
+  // Function to handle triple tap events
+  const handleTripleTap = (element, direction) => {
+    if (element === "video") {
+      // Triple tap on video area
+      if (direction === "backward") {
+        commentsRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to comments
+      } else if (direction === "forward") {
+        window.location.href = "http://localhost:3000/"; // Navigate to home page
+      }
+    } else if (element === "rectangle") {
+      // Triple tap on blue rectangle
+      const nextVid = getNextVideoId(); // Get next video ID
+      navigate(`/videopage/${nextVid}`); // Navigate to next video's route
+    }
+  };
 
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        setTapCount(0);
-      }, 300);
+  let tapCount = 0; // Track number of taps
+  let tapTimeout; // Timeout for tap events
 
-      const rect = videoElement.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+  // Function to handle tap events
+  const handleTap = (element, direction) => {
+    tapCount++;
+    clearTimeout(tapTimeout);
 
-      if (tapInterval < 300) {
-        if (tapCount === 1) {
-          if (x > rect.width * 0.66) {
-            videoElement.currentTime += 10; // Double-tap right
-          } else if (x < rect.width * 0.33) {
-            videoElement.currentTime -= 10; // Double-tap left
-          } else {
-            videoElement.paused ? videoElement.play() : videoElement.pause(); // Single-tap center
-          }
-        } else if (tapCount === 2) {
-          if (x > rect.width * 0.66) {
-            window.close(); // Three-taps on the right side: close the website
-          } else if (x < rect.width * 0.33) {
-            document.querySelector('.comments_VideoPage').scrollIntoView({ behavior: 'smooth' }); // Three-taps on the left side: show the comment section
-          } else {
-            console.log("Three taps detected"); // Three-tap logic: example - do something on three taps
-          }
+    tapTimeout = setTimeout(() => {
+      if (tapCount === 1) {
+        if (element === "rectangle") {
+          // Check if the tapped element is the blue rectangle
+          increasePoints(); // Increase points on single tap
         }
-        e.preventDefault(); // Prevent default behavior for double-click (e.g., fullscreen)
+
+        if (videoRef.current.paused) {
+          videoRef.current.play(); // Play video on single tap
+        } else {
+          videoRef.current.pause(); // Pause video on single tap
+        }
+      } else if (tapCount === 2) {
+        handleDoubleTap(direction); // Handle double tap
+      } else if (tapCount === 3) {
+        handleTripleTap(element, direction); // Handle triple tap
       }
+      tapCount = 0;
+    }, 300); // 300ms window for quicker detection
+  };
 
-      // Single tap on the top right corner: show current location and temperature
-      if (tapCount === 1 && x > rect.width * 0.75 && y < rect.height * 0.25) {
-        fetchLocationAndWeather();
-      }
-    };
+  // Function to handle hold start events
+  const handleHoldStart = (direction) => {
+    if (direction === "forward") {
+      videoRef.current.playbackRate = 2.0; // Set playback rate to 2x
+    } else if (direction === "backward") {
+      videoRef.current.playbackRate = 0.5; // Set playback rate to 0.5x
+    }
+  };
 
-    const handleHold = (e) => {
-      const rect = videoElement.getBoundingClientRect();
-      const x = e.clientX - rect.left;
+  // Function to handle hold end events
+  const handleHoldEnd = () => {
+    videoRef.current.playbackRate = 1.0; // Reset playback rate to normal
+  };
 
-      if (x > rect.width * 0.66) {
-        videoElement.playbackRate = 2.0; // Hold on the right side: play at 2x speed
-      } else if (x < rect.width * 0.33) {
-        videoElement.playbackRate = 0.5; // Hold on the left side: play at 0.5x speed
-      }
-    };
+  // Function to find the next video
+  const getNextVideoId = () => {
+    const currentIndex = vids?.data.findIndex((video) => video._id === vid);
+    const nextIndex = (currentIndex - 1) % vids?.data.length; // Loop back to the first video if at the end
+    if (currentIndex === vids?.data.length + 1) {
+      // If at the last video, loop to the first video
+      return vids?.data[0]._id;
+    }
+    return vids?.data[nextIndex]?._id;
+  };
 
-    const handleHoldEnd = () => {
-      videoElement.playbackRate = 1.0; // Reset playback rate
-    };
-
-    videoElement.addEventListener("click", handleGesture);
-    videoElement.addEventListener("mousedown", handleHold);
-    videoElement.addEventListener("mouseup", handleHoldEnd);
-    videoElement.addEventListener("mouseleave", handleHoldEnd);
-
-    return () => {
-      videoElement.removeEventListener("click", handleGesture);
-      videoElement.removeEventListener("mousedown", handleHold);
-      videoElement.removeEventListener("mouseup", handleHoldEnd);
-      videoElement.removeEventListener("mouseleave", handleHoldEnd);
-    };
-  }, [tapCount]);
+  const increasePoints = () => {
+    setPoints(points + 5);
+    console.log(points);
+  };
 
   return (
     <div className="container_videoPage">
@@ -153,12 +179,39 @@ function VideoPage() {
         <div className="video_display_screen_videoPage">
           <video
             ref={videoRef}
-            src={`http://localhost:5500/${vv?.filePath}`}
-            // src={`https://youtubeclone1234.onrender.com/${vv?.filePath}`}
+            src={`http://localhost:5500/${vv?.filePath}`} // Video path
             className="video_ShowVideo_videoPage"
             controls
           ></video>
-          <div className="weather-icon" onClick={fetchLocationAndWeather}></div>
+          <div
+            className="weather-icon" // Weather icon for fetching location
+            onClick={fetchLocationAndWeather}
+          ></div>
+          <div
+            className="tap-left" // Left tap area for rewind
+            onClick={() => handleTap("video", "backward")}
+            onMouseDown={() => handleHoldStart("backward")}
+            onMouseUp={handleHoldEnd}
+            onTouchStart={() => handleHoldStart("backward")}
+            onTouchEnd={handleHoldEnd}
+            onDoubleClick={() => handleDoubleTap("backward")} // Add double-click handler
+          ></div>
+          <div
+            className="tap-right" // Right tap area for forward
+            onClick={() => handleTap("video", "forward")}
+            onMouseDown={() => handleHoldStart("forward")}
+            onMouseUp={handleHoldEnd}
+            onTouchStart={() => handleHoldStart("forward")}
+            onTouchEnd={handleHoldEnd}
+            onDoubleClick={() => handleDoubleTap("forward")} // Add double-click handler
+          ></div>
+
+          {/* Blue rectangle for navigation to next video */}
+          <div
+            className="blue-rectangle" // Blue rectangle for triple tap navigation
+            onClick={() => handleTap("rectangle", "forward")}
+          ></div>
+
           <div className="video_details_videoPage">
             <div className="video_btns_title_VideoPage_cont">
               <p className="video_title_VideoPage">{vv?.videoTitle}</p>
@@ -176,7 +229,7 @@ function VideoPage() {
             >
               <p className="chanel_name_videoPage">{vv?.Uploder}</p>
             </Link>
-            <div className="comments_VideoPage">
+            <div className="comments_VideoPage" ref={commentsRef}>
               <h2>
                 <u>Comments</u>
               </h2>

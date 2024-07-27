@@ -5,12 +5,10 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { setCurrentUser } from "../../actions/currentUser";
 import "./Auth.css";
-
 function Auth({ User, setAuthBtn, setEditCreateChanelBtn }) {
+
   const dispatch = useDispatch();
-  
   const onLogOutSuccess = () => {
-    localStorage.removeItem('user');
     dispatch(setCurrentUser(null));
     alert("Log Out SuccessFully");
   };
@@ -33,9 +31,11 @@ function Auth({ User, setAuthBtn, setEditCreateChanelBtn }) {
         <div className="btns_Auth">
           {User?.result.name ? (
             <>
-              <Link to={`/chanel/${User?.result._id}`} className="btn_Auth">
-                Your Chanel
-              </Link>
+              {
+                <Link to={`/chanel/${User?.result._id}`} className="btn_Auth">
+                  Your Chanel
+                </Link>
+              }
             </>
           ) : (
             <>
@@ -50,7 +50,9 @@ function Auth({ User, setAuthBtn, setEditCreateChanelBtn }) {
 
           <div>
             <GoogleLogout
-              clientId="810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.com"
+              clientId={
+                "810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.comm"
+              }
               onLogoutSuccess={onLogOutSuccess}
               render={(renderProps) => (
                 <div onClick={renderProps.onClick} className="btn_Auth">
