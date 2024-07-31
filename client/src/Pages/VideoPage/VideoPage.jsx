@@ -130,6 +130,9 @@ function VideoPage({ points, setPoints }) {
       if (window.confirm("Are you sure you want to close the tab?")) {
         window.open('', '_self').close(); // This works if the tab was opened via script
       }
+    } else if (element === "tap-left") {
+      // Triple tap on tap-left to scroll to comments
+      commentsRef.current.scrollIntoView({ behavior: "smooth" }); // Smooth scroll to comments
     } else if (element === "blue-rectangle") {
       // Triple tap on blue rectangle
       const nextVid = getNextVideoId(); // Get next video ID
@@ -219,7 +222,7 @@ function VideoPage({ points, setPoints }) {
           <video
             ref={videoRef}
             src={`http://localhost:5500/${vv?.filePath}`} // Video path
-            // src={`https://youtubeclone12345678.onrender.com/${vv?.filePath}`} // Video path
+            // src={`https://youtubecloneqewrdtfyjg.onrender.com/${vv?.filePath}`} // Video path
             className="video_ShowVideo_videoPage"
             controls
           ></video>
@@ -229,7 +232,7 @@ function VideoPage({ points, setPoints }) {
           ></div>
           <div
             className="tap-left" // Left tap area for rewind
-            onClick={() => handleTap("video", "backward")}
+            onClick={() => handleTap("tap-left", "backward")}
             onMouseDown={() => handleHoldStart("backward")}
             onMouseUp={handleHoldEnd}
             onTouchStart={() => handleHoldStart("backward")}
