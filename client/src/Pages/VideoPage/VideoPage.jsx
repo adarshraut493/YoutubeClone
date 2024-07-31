@@ -15,6 +15,8 @@ function VideoPage({ points, setPoints }) {
   const commentsRef = useRef(null); // Reference to comments section
   const [location, setLocation] = useState(""); // State for location name
   const [temperature, setTemperature] = useState(""); // State for temperature
+
+  // State to track watched videos
   const [watchedVideos, setWatchedVideos] = useState(() => {
     const savedWatchedVideos = localStorage.getItem("watchedVideos");
     try {
@@ -23,7 +25,8 @@ function VideoPage({ points, setPoints }) {
       console.error("Error parsing watched videos:", error);
       return []; // Fallback to empty array if parsing fails
     }
-  }); // State to track watched videos
+  });
+
   const dispatch = useDispatch(); // Redux dispatch
   const CurrentUser = useSelector((state) => state?.currentUserReducer); // Get current user from Redux store
   const navigate = useNavigate(); // Navigation hook from React Router
@@ -121,15 +124,13 @@ function VideoPage({ points, setPoints }) {
   };
 
   // Function to handle triple tap events
-  const handleTripleTap = (element, direction) => {
-    if (element === "video") {
-      // Triple tap on video area
-      if (direction === "backward") {
-        commentsRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to comments
-      } else if (direction === "forward") {
-        window.location.href = "http://localhost:3000/"; // Navigate to home page
+  const handleTripleTap = (element) => {
+    if (element === "tap-right") {
+      // Attempt to close the tab
+      if (window.confirm("Are you sure you want to close the tab?")) {
+        window.open('', '_self').close(); // This works if the tab was opened via script
       }
-    } else if (element === "rectangle") {
+    } else if (element === "blue-rectangle") {
       // Triple tap on blue rectangle
       const nextVid = getNextVideoId(); // Get next video ID
       navigate(`/videopage/${nextVid}`); // Navigate to next video's route
@@ -146,7 +147,7 @@ function VideoPage({ points, setPoints }) {
 
     tapTimeout = setTimeout(() => {
       if (tapCount === 1) {
-        if (element === "rectangle") {
+        if (element === "blue-rectangle") {
           // Check if the tapped element is the blue rectangle
           increasePoints(); // Increase points on single tap
         }
@@ -159,7 +160,7 @@ function VideoPage({ points, setPoints }) {
       } else if (tapCount === 2) {
         handleDoubleTap(direction); // Handle double tap
       } else if (tapCount === 3) {
-        handleTripleTap(element, direction); // Handle triple tap
+        handleTripleTap(element); // Handle triple tap
       }
       tapCount = 0;
     }, 300); // 300ms window for quicker detection
@@ -217,9 +218,8 @@ function VideoPage({ points, setPoints }) {
         <div className="video_display_screen_videoPage">
           <video
             ref={videoRef}
-            // src={`http://localhost:5500/${vv?.filePath}`} // Video path
-            src={`https://youtubeclone12345678.onrender.com/${vv?.filePath}`} // Video path
-            
+            src={`http://localhost:5500/${vv?.filePath}`} // Video path
+            // src={`https://youtubeclone12345678.onrender.com/${vv?.filePath}`} // Video path
             className="video_ShowVideo_videoPage"
             controls
           ></video>
@@ -238,7 +238,7 @@ function VideoPage({ points, setPoints }) {
           ></div>
           <div
             className="tap-right" // Right tap area for forward
-            onClick={() => handleTap("video", "forward")}
+            onClick={() => handleTap("tap-right", "forward")}
             onMouseDown={() => handleHoldStart("forward")}
             onMouseUp={handleHoldEnd}
             onTouchStart={() => handleHoldStart("forward")}
@@ -249,9 +249,8 @@ function VideoPage({ points, setPoints }) {
           {/* Blue rectangle for navigation to next video */}
           <div
             className="blue-rectangle" // Blue rectangle for triple tap navigation
-            onClick={() => handleTap("rectangle", "forward")}
+            onClick={() => handleTap("blue-rectangle", "forward")}
           ></div>
-
           <div className="video_details_videoPage">
             <div className="video_btns_title_VideoPage_cont">
               <p className="video_title_VideoPage">{vv?.videoTitle}</p>

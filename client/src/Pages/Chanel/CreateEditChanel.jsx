@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/auth";
 import { updateChanelDate } from "../../actions/chanelUser";
 import "./CreateEditChanel.css";
-function CreateEditChanel({ setEditCreateChanelBtn }) {
+function CreateEditChanel ({setEditCreateChanelBtn}) {
   //   const CurrentUser = {
   //     result: {
   //       email: "abzxy50312@gmail.com",

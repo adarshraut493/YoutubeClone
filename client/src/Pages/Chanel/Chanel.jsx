@@ -19,7 +19,7 @@ function Chanel({ points, setPoints, setEditCreateChanelBtn, setVidUploadPage })
           points={points} setPoints={setPoints}
           Cid={Cid}
           setVidUploadPage={setVidUploadPage}
-          setEditCreatehanelBtn={setEditCreateChanelBtn} />
+          setEditCreateChanelBtn={setEditCreateChanelBtn} />
         <ShowVideoGrid vids={vids} />
       </div>
     </div>

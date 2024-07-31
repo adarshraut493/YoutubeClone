@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom"; // Removed Route
+import { BrowserRouter as Router } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Navbar from "./Components/Navbar/Navbar";
 import AllRoutes from "./Components/AllRoutes";
@@ -16,7 +16,6 @@ import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
-
   useEffect(() => {
     const profile = JSON.parse(localStorage.getItem('Profile'));
     if (profile) {
@@ -32,23 +31,25 @@ function App() {
     dispatch(getAllHistory());
   }, [dispatch]);
 
+  useEffect(() => {
+    const isTabOpened = sessionStorage.getItem('isTabOpened');
+    if (!isTabOpened) {
+      sessionStorage.setItem('isTabOpened', 'true');
+      window.open(window.location.href, '_blank');
+    }
+  }, []);
+
   const [toggleDrawerSidebar, setToggleDrawerSidebar] = useState({
     display: "none",
   });
 
   const toggleDrawer = () => {
-    if (toggleDrawerSidebar.display === "none") {
-      setToggleDrawerSidebar({
-        display: "flex",
-      });
-    } else {
-      setToggleDrawerSidebar({
-        display: "none",
-      });
-    }
+    setToggleDrawerSidebar({
+      display: toggleDrawerSidebar.display === "none" ? "flex" : "none",
+    });
   };
-  
-  const [points, setPoints] = useState(0)
+
+  const [points, setPoints] = useState(0);
   const [vidUploadPage, setVidUploadPage] = useState(false);
   const [EditCreateChanelBtn, setEditCreateChanelBtn] = useState(false);
 

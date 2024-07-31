@@ -3,7 +3,7 @@ import { FaEdit, FaUpload, FaHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 import "./DescribeChanel.css";
-function DecribeChanel({ points, setEditCreateChanelBtn, Cid, setVidUploadPage }) {
+function DecribeChanel({ points,setEditCreateChanelBtn, Cid, setVidUploadPage }) {
   const chanels = useSelector((state) => state?.chanelReducers);
 
   const currentChanel = chanels.filter((c) => c._id === Cid)[0];
@@ -26,6 +26,7 @@ function DecribeChanel({ points, setEditCreateChanelBtn, Cid, setVidUploadPage }
             className="editbtn_chanel"
             onClick={() => {
               setEditCreateChanelBtn(true);
+              console.log("treu");
             }}
           >
             <FaEdit />
