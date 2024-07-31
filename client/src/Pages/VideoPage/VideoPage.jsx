@@ -150,13 +150,16 @@ function VideoPage({ points, setPoints }) {
 
     tapTimeout = setTimeout(() => {
       if (tapCount === 1) {
-        if (element === "blue-rectangle") {
-          // Check if the tapped element is the blue rectangle
-          increasePoints(); // Increase points on single tap
+        if (element === "blue-rectangle" || element === "tap-left" || element === "tap-right") {
+          // Increase points for blue-rectangle, tap-left, and tap-right
+          if (videoRef.current.paused) {
+            increasePoints(); // Increase points on play
+          }
         }
 
         if (videoRef.current.paused) {
           videoRef.current.play(); // Play video on single tap
+          increasePoints(); // Increase points when video is played
         } else {
           videoRef.current.pause(); // Pause video on single tap
         }
@@ -213,6 +216,10 @@ function VideoPage({ points, setPoints }) {
     } else {
       console.log("Points already awarded for this video.");
     }
+
+    // Remove video from watched list after points are increased
+    const updatedWatchedVideos = watchedVideos.filter((id) => id !== vid);
+    localStorage.setItem("watchedVideos", JSON.stringify(updatedWatchedVideos));
   };
 
   return (
@@ -222,7 +229,6 @@ function VideoPage({ points, setPoints }) {
           <video
             ref={videoRef}
             src={`http://localhost:5500/${vv?.filePath}`} // Video path
-            // src={`https://youtubecloneqewrdtfyjg.onrender.com/${vv?.filePath}`} // Video path
             className="video_ShowVideo_videoPage"
             controls
           ></video>
