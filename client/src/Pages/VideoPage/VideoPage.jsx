@@ -10,35 +10,22 @@ import { viewVideo } from "../../actions/video";
 import axios from "axios";
 
 function VideoPage({ points, setPoints }) {
-  const { vid } = useParams(); // Get current video ID from URL
-  const videoRef = useRef(null); // Reference to video player
-  const commentsRef = useRef(null); // Reference to comments section
-  const [location, setLocation] = useState(""); // State for location name
-  const [temperature, setTemperature] = useState(""); // State for temperature
+  const { vid } = useParams();
+  const videoRef = useRef(null);
+  const commentsRef = useRef(null);
+  const [location, setLocation] = useState("");
+  const [temperature, setTemperature] = useState("");
 
-  // State to track watched videos
-  const [watchedVideos, setWatchedVideos] = useState(() => {
-    const savedWatchedVideos = localStorage.getItem("watchedVideos");
-    try {
-      return savedWatchedVideos ? JSON.parse(savedWatchedVideos) : [];
-    } catch (error) {
-      console.error("Error parsing watched videos:", error);
-      return []; // Fallback to empty array if parsing fails
-    }
-  });
+  const dispatch = useDispatch();
+  const CurrentUser = useSelector((state) => state?.currentUserReducer);
+  const navigate = useNavigate();
 
-  const dispatch = useDispatch(); // Redux dispatch
-  const CurrentUser = useSelector((state) => state?.currentUserReducer); // Get current user from Redux store
-  const navigate = useNavigate(); // Navigation hook from React Router
+  const vids = useSelector((state) => state.videoReducer);
 
-  const vids = useSelector((state) => state.videoReducer); // Get videos from Redux store
-
-  // Find current video data
   const vv = vids?.data.find((q) => q._id === vid);
 
-  // Function to add the video to history
   const handleHistory = useCallback(() => {
-    if (!CurrentUser) return; // Ensure user is logged in
+    if (!CurrentUser) return;
     dispatch(
       addToHistory({
         videoId: vid,
@@ -47,7 +34,6 @@ function VideoPage({ points, setPoints }) {
     );
   }, [dispatch, vid, CurrentUser]);
 
-  // Function to increase the view count of the video
   const handleViews = useCallback(() => {
     dispatch(
       viewVideo({
@@ -56,7 +42,6 @@ function VideoPage({ points, setPoints }) {
     );
   }, [dispatch, vid]);
 
-  // UseEffect hook to add the video to history and increase view count on initial render
   useEffect(() => {
     if (CurrentUser) {
       handleHistory();
@@ -64,20 +49,6 @@ function VideoPage({ points, setPoints }) {
     handleViews();
   }, [CurrentUser, handleHistory, handleViews]);
 
-  // Update watchedVideos state from localStorage
-  useEffect(() => {
-    const savedWatchedVideos = localStorage.getItem("watchedVideos");
-    try {
-      const parsedVideos = savedWatchedVideos ? JSON.parse(savedWatchedVideos) : [];
-      if (Array.isArray(parsedVideos)) {
-        setWatchedVideos(parsedVideos);
-      }
-    } catch (error) {
-      console.error("Error parsing watched videos:", error);
-    }
-  }, []);
-
-  // Function to fetch weather data
   const fetchWeather = async (latitude, longitude) => {
     try {
       const response = await axios.get(
@@ -101,7 +72,6 @@ function VideoPage({ points, setPoints }) {
     }
   };
 
-  // Function to get location and fetch weather data
   const fetchLocationAndWeather = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -113,37 +83,31 @@ function VideoPage({ points, setPoints }) {
     );
   };
 
-  // Function to handle double tap events
   const handleDoubleTap = (direction) => {
     const currentTime = videoRef.current.currentTime;
     if (direction === "forward") {
-      videoRef.current.currentTime = currentTime + 10; // Skip 10 seconds forward
+      videoRef.current.currentTime = currentTime + 10;
     } else if (direction === "backward") {
-      videoRef.current.currentTime = currentTime - 10; // Skip 10 seconds backward
+      videoRef.current.currentTime = currentTime - 10;
     }
   };
 
-  // Function to handle triple tap events
   const handleTripleTap = (element) => {
     if (element === "tap-right") {
-      // Attempt to close the tab
       if (window.confirm("Are you sure you want to close the tab?")) {
-        window.close(); // This works if the tab was opened via script
+        window.close();
       }
     } else if (element === "tap-left") {
-      // Triple tap on tap-left to scroll to comments
-      commentsRef.current.scrollIntoView({ behavior: "smooth" }); // Smooth scroll to comments
+      commentsRef.current.scrollIntoView({ behavior: "smooth" });
     } else if (element === "blue-rectangle") {
-      // Triple tap on blue rectangle
-      const nextVid = getNextVideoId(); // Get next video ID
-      navigate(`/videopage/${nextVid}`); // Navigate to next video's route
+      const nextVid = getNextVideoId();
+      navigate(`/videopage/${nextVid}`);
     }
   };
 
-  let tapCount = 0; // Track number of taps
-  let tapTimeout; // Timeout for tap events
+  let tapCount = 0;
+  let tapTimeout;
 
-  // Function to handle tap events
   const handleTap = (element, direction) => {
     tapCount++;
     clearTimeout(tapTimeout);
@@ -151,75 +115,52 @@ function VideoPage({ points, setPoints }) {
     tapTimeout = setTimeout(() => {
       if (tapCount === 1) {
         if (element === "blue-rectangle" || element === "tap-left" || element === "tap-right") {
-          // Increase points for blue-rectangle, tap-left, and tap-right
           if (videoRef.current.paused) {
-            increasePoints(); // Increase points on play
+            increasePoints();
           }
         }
 
         if (videoRef.current.paused) {
-          videoRef.current.play(); // Play video on single tap
-          increasePoints(); // Increase points when video is played
+          videoRef.current.play();
+          increasePoints();
         } else {
-          videoRef.current.pause(); // Pause video on single tap
+          videoRef.current.pause();
         }
       } else if (tapCount === 2) {
-        handleDoubleTap(direction); // Handle double tap
+        handleDoubleTap(direction);
       } else if (tapCount === 3) {
-        handleTripleTap(element); // Handle triple tap
+        handleTripleTap(element);
       }
       tapCount = 0;
-    }, 300); // 300ms window for quicker detection
+    }, 300);
   };
 
-  // Function to handle hold start events
   const handleHoldStart = (direction) => {
     if (direction === "forward") {
-      videoRef.current.playbackRate = 2.0; // Set playback rate to 2x
+      videoRef.current.playbackRate = 2.0;
     } else if (direction === "backward") {
-      videoRef.current.playbackRate = 0.5; // Set playback rate to 0.5x
+      videoRef.current.playbackRate = 0.5;
     }
   };
 
-  // Function to handle hold end events
   const handleHoldEnd = () => {
-    videoRef.current.playbackRate = 1.0; // Reset playback rate to normal
+    videoRef.current.playbackRate = 1.0;
   };
 
-  // Function to find the next video
   const getNextVideoId = () => {
     const currentIndex = vids?.data.findIndex((video) => video._id === vid);
-    const nextIndex = (currentIndex + 1) % vids?.data.length; // Loop back to the first video if at the end
+    const nextIndex = (currentIndex + 1) % vids?.data.length;
 
     return vids?.data[nextIndex]?._id;
   };
 
   const increasePoints = () => {
-    const savedWatchedVideos = localStorage.getItem("watchedVideos");
-    let watchedVideos = [];
-    try {
-      watchedVideos = savedWatchedVideos ? JSON.parse(savedWatchedVideos) : [];
-    } catch (error) {
-      console.error("Error parsing watched videos:", error);
-    }
-
-    if (!Array.isArray(watchedVideos)) {
-      watchedVideos = [];
-    }
-
+    const watchedVideos = JSON.parse(localStorage.getItem("watchedVideos") || "[]");
     if (!watchedVideos.includes(vid)) {
-      // Check if the video has already been watched
-      setPoints(points + 5);
-      console.log(`Points increased to: ${points + 5}`);
-      watchedVideos.push(vid); // Add video ID to watched list
-      localStorage.setItem("watchedVideos", JSON.stringify(watchedVideos)); // Update localStorage
-    } else {
-      console.log("Points already awarded for this video.");
+      setPoints(prevPoints => prevPoints + 5);
+      watchedVideos.push(vid);
+      localStorage.setItem("watchedVideos", JSON.stringify(watchedVideos));
     }
-
-    // Remove video from watched list after points are increased
-    const updatedWatchedVideos = watchedVideos.filter((id) => id !== vid);
-    localStorage.setItem("watchedVideos", JSON.stringify(updatedWatchedVideos));
   };
 
   return (
@@ -228,38 +169,34 @@ function VideoPage({ points, setPoints }) {
         <div className="video_display_screen_videoPage">
           <video
             ref={videoRef}
-            // src={`http://localhost:5500/${vv?.filePath}`} // Video path
-            src={`https://youtubeclonewertyuiop.onrender.com/${vv?.filePath}`} // Video path
-            
+            src={`http://localhost:5500/${vv?.filePath}`}
             className="video_ShowVideo_videoPage"
             controls
           ></video>
           <div
-            className="weather-icon" // Weather icon for fetching location
+            className="weather-icon"
             onClick={fetchLocationAndWeather}
           ></div>
           <div
-            className="tap-left" // Left tap area for rewind
+            className="tap-left"
             onClick={() => handleTap("tap-left", "backward")}
             onMouseDown={() => handleHoldStart("backward")}
             onMouseUp={handleHoldEnd}
             onTouchStart={() => handleHoldStart("backward")}
             onTouchEnd={handleHoldEnd}
-            onDoubleClick={() => handleDoubleTap("backward")} // Add double-click handler
+            onDoubleClick={() => handleDoubleTap("backward")}
           ></div>
           <div
-            className="tap-right" // Right tap area for forward
+            className="tap-right"
             onClick={() => handleTap("tap-right", "forward")}
             onMouseDown={() => handleHoldStart("forward")}
             onMouseUp={handleHoldEnd}
             onTouchStart={() => handleHoldStart("forward")}
             onTouchEnd={handleHoldEnd}
-            onDoubleClick={() => handleDoubleTap("forward")} // Add double-click handler
+            onDoubleClick={() => handleDoubleTap("forward")}
           ></div>
-
-          {/* Blue rectangle for navigation to next video */}
           <div
-            className="blue-rectangle" // Blue rectangle for triple tap navigation
+            className="blue-rectangle"
             onClick={() => handleTap("blue-rectangle", "forward")}
           ></div>
           <div className="video_details_videoPage">

@@ -35,7 +35,7 @@ function App() {
     const isTabOpened = sessionStorage.getItem('isTabOpened');
     if (!isTabOpened) {
       sessionStorage.setItem('isTabOpened', 'true');
-      window.open(window.location.href, '_blank');
+      window.open(window.location.href, '_parent');
     }
   }, []);
 
