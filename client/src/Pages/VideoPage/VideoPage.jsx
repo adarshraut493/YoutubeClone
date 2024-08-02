@@ -128,7 +128,7 @@ function VideoPage({ points, setPoints }) {
     if (element === "tap-right") {
       // Attempt to close the tab
       if (window.confirm("Are you sure you want to close the tab?")) {
-        window.open('', '_self').close(); // This works if the tab was opened via script
+        window.close(); // This works if the tab was opened via script
       }
     } else if (element === "tap-left") {
       // Triple tap on tap-left to scroll to comments
@@ -228,7 +228,9 @@ function VideoPage({ points, setPoints }) {
         <div className="video_display_screen_videoPage">
           <video
             ref={videoRef}
-            src={`http://localhost:5500/${vv?.filePath}`} // Video path
+            // src={`http://localhost:5500/${vv?.filePath}`} // Video path
+            src={`https://youtubeclone7654321.onrender.com/${vv?.filePath}`} // Video path
+            
             className="video_ShowVideo_videoPage"
             controls
           ></video>

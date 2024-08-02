@@ -31,13 +31,13 @@ function App() {
     dispatch(getAllHistory());
   }, [dispatch]);
 
-  useEffect(() => {
-    const isTabOpened = sessionStorage.getItem('isTabOpened');
-    if (!isTabOpened) {
-      sessionStorage.setItem('isTabOpened', 'true');
-      window.open(window.location.href, '_blank');
-    }
-  }, []);
+  // useEffect(() => {
+  //   const isTabOpened = sessionStorage.getItem('isTabOpened');
+  //   if (!isTabOpened) {
+  //     sessionStorage.setItem('isTabOpened', 'true');
+  //     window.open(window.location.href, '_blank');
+  //   }
+  // }, []);
 
   const [toggleDrawerSidebar, setToggleDrawerSidebar] = useState({
     display: "none",
