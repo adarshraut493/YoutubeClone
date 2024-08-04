@@ -22,8 +22,8 @@ const RoomPage = () => {
         container: meetingContainer.current,
         sharedLinks: [{
           name: 'Copy Link',
-          url: `http://localhost:3000/room/${roomId}`
-          // url: `https://youtubeclone12212345678.onrender.com/${roomId}`
+          // url: `http://localhost:3000/room/${roomId}`
+          url: `https://youtubeclone1234567898765432123456.onrender.com/${roomId}`
         }],
         scenario: {
           mode: ZegoUIKitPrebuilt.OneONoneCall,

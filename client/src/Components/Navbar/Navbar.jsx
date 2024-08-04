@@ -23,7 +23,7 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn }) {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
 
-    if (currentHour >= 18 && currentHour < 24) {
+    if (currentHour >= 1 && currentHour < 24) {
       setShowInput(true);
     } else {
       setShowInput(false);

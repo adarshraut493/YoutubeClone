@@ -169,8 +169,8 @@ function VideoPage({ points, setPoints }) {
         <div className="video_display_screen_videoPage">
           <video
             ref={videoRef}
-            src={`http://localhost:5500/${vv?.filePath}`}
-            // src={`https://youtubeclone12212345678.onrender.com0/${vv?.filePath}`}
+            // // src={`http://localhost:5500/${vv?.filePath}`}
+            src={`https://youtubeclone1234567898765432123456.onrender.com/${vv?.filePath}`}
             
             className="video_ShowVideo_videoPage"
             controls
