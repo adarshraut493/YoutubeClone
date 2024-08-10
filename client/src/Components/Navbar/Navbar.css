@@ -72,4 +72,19 @@
 
 /* /////////////////////// */
 
+.vid_bell_Navbar1 {
+    font-size: 22px; /* Ensures the icon size remains 22px */
+    min-width: 22px; /* Prevents shrinking below 22px */
+    min-height: 22px;
+    flex-shrink: 0; /* Prevents the icon from shrinking */
+    color: antiquewhite;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .vid_bell_Navbar1 {
+      font-size: 22px; /* Keeps the size consistent even on smaller screens */
+      min-width: 22px;
+      min-height: 22px;
+    }
+  }
   

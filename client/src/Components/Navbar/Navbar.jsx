@@ -78,7 +78,7 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
           </Link>
         </div>
         <SearchBar />
-        <RiVideoAddLine onClick={handleClick} size={22} className="vid_bell_Navbar" />
+        <RiVideoAddLine onClick={handleClick} size={22} className="vid_bell_Navbar1" />
         {showInput && (
           <div>
             <input
