@@ -1,5 +1,4 @@
 import React from "react";
-import { GoogleLogout } from "react-google-login";
 import { BiLogOut } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -9,17 +8,17 @@ import "./Auth.css";
 function Auth({ User, setAuthBtn, setEditCreateChanelBtn }) {
   const dispatch = useDispatch();
 
-  const onLogOutSuccess = () => {
-    dispatch(setCurrentUser(null));
-    alert("Logged Out Successfully");
+  const onLogOut = () => {
+    const auth2 = window.gapi.auth2.getAuthInstance();
+    auth2.signOut().then(() => {
+      dispatch(setCurrentUser(null));
+      alert("Logged Out Successfully");
+    });
   };
 
-  // Extract User details safely
   const userName = User?.result?.name;
   const userEmail = User?.result?.email;
   const userId = User?.result?._id;
-
-  // Safe retrieval of the first character from userName or userEmail
   const firstChar = userName?.charAt(0).toUpperCase() || userEmail?.charAt(0).toUpperCase() || '';
 
   return (
@@ -46,22 +45,9 @@ function Auth({ User, setAuthBtn, setEditCreateChanelBtn }) {
               onClick={() => setEditCreateChanelBtn(true)}
             />
           )}
-
-          <div>
-            <GoogleLogout
-              clientId="810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.com"
-              onLogoutSuccess={onLogOutSuccess}
-              render={(renderProps) => (
-                <div
-                  onClick={renderProps.onClick}
-                  className="btn_Auth"
-                  disabled={renderProps.disabled}
-                >
-                  <BiLogOut />
-                  Log Out
-                </div>
-              )}
-            />
+          <div onClick={onLogOut} className="btn_Auth">
+            <BiLogOut />
+            Log Out
           </div>
         </div>
       </div>
