@@ -119,9 +119,9 @@
 
 .tap-left {
   left: 0;
-  height: 25rem;
+  height: 40rem;
   width: 35%; /* Cover 35% of the video */
-  /* background: rgba(255, 0, 0, 0.3); Semi-transparent red for visibility */
+  /* background: rgba(255, 0, 0, 0.3);  */
 }
 
 .blue-rectangle {
@@ -129,8 +129,8 @@
   top: 0%;
   left: 35%;
   width: 30%;
-  height: 26rem;
-  /* background-color: rgba(0, 0, 255, 0.5); Blue with 50% opacity */
+  height: 40rem;
+  /* background-color: rgba(0, 0, 255, 0.5);  */
   cursor: pointer;
   z-index: 1; /* Ensure it is above the video controls */
 }
@@ -138,8 +138,8 @@
 
 .tap-right {
   top: 16%;
-  height: 16rem;
+  height: 40rem;
   right: 0;
   width: 35%; /* Cover 35% of the video */
-  /* background: rgba(255, 0, 0, 0.3); Semi-transparent red for visibility */
+  /* background: rgba(255, 0, 0, 0.3); */
 }

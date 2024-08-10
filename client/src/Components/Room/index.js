@@ -13,8 +13,8 @@ const RoomPage = () => {
 
   useEffect(() => {
     const myMeeting = async () => {
-      const appID = 1327144137;
-      const serverSecret = "6d187c5585f114ad2d5c026ccb65fd0a";
+      const appID = 846110099;
+      const serverSecret = "a618afd7470a44bd902a9c1914a68527";
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomId, Date.now().toString(), "Adarsh_Raut");
       const zc = ZegoUIKitPrebuilt.create(kitToken);
 
@@ -22,8 +22,8 @@ const RoomPage = () => {
         container: meetingContainer.current,
         sharedLinks: [{
           name: 'Copy Link',
-          url: `http://:3000/room/${roomId}`
-          // url: `https://youtubeclone1234567898765432123456.onrender.com/${roomId}`
+          url: `http://localhost:3000/room/${roomId}`
+          // url: `https://youtubeclonegubkvcrt7yhjbcgdfty.onrender.com/${roomId}`
         }],
         scenario: {
           mode: ZegoUIKitPrebuilt.OneONoneCall,

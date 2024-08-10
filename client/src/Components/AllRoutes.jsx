@@ -14,7 +14,8 @@ function AllRoutes({ points, setPoints, setEditCreateChanelBtn, setVidUploadPage
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+        
+        <Route path="/" element={<Home setVidUploadPage={setVidUploadPage}/> } />
       <Route path="/library" element={<Library />} />
       <Route path="/history" element={<WatchHistory />} />
       <Route path="/watchlater" element={<WatchLater />} />

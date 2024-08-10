@@ -1,7 +1,7 @@
 import React from 'react'
 import ShowVideo from '../ShowVideo/ShowVideo'
 import './ShowVideoGrid.css'
-function ShowVideoGrid({vids,points, setPoints }) {
+        function ShowVideoGrid({vids,points, setPoints ,  setVidUploadPage}) {
   return (
     <div className='Container_ShowVideoGrid'>
         {

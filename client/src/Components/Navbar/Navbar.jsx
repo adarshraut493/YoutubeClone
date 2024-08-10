@@ -11,8 +11,9 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/auth";
 import Auth from "../../Pages/Auth/Auth";
+import { FaHeart, FaUpload } from "react-icons/fa";
 
-function Navbar({ toggleDrawer, setEditCreateChanelBtn }) {
+function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUploadPage }) {
   const [AuthBtn, setAuthBtn] = useState(false);
   const CurrentUser = useSelector((state) => state.currentUserReducer);
 
@@ -46,18 +47,20 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn }) {
     }
     gapi.load("client:auth2", start);
   }, []);
+  
 
   const dispatch = useDispatch();
 
   const onSuccess = (response) => {
+    console.log("Login Success:", response);
     const Email = response?.profileObj.email;
-    console.log(Email);
     dispatch(login({ email: Email }));
   };
-
+  
   const onFailure = (response) => {
-    console.log("Failed", response);
+    console.log("Login Failed:", response);
   };
+  
 
   return (
     <>
@@ -75,7 +78,6 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn }) {
           </Link>
         </div>
         <SearchBar />
-
         <RiVideoAddLine onClick={handleClick} size={22} className="vid_bell_Navbar" />
         {showInput && (
           <div>
@@ -87,6 +89,14 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn }) {
             <button onClick={handleJoinRoom}>Join</button>
           </div>
         )}
+        <p className="vid_bell_Navbar" onClick={() => setVidUploadPage(true)}>
+            <FaUpload  className="vid_bell_Navbar"/>
+            <b> Upload Video</b>
+          </p>
+          <p className="vid_bell_Navbar">
+            <FaHeart className="vid_bell_Navbar"/>
+            <b> {points} Points</b>
+          </p> 
 
         <div className="apps_Box">
           <p className="appBox"></p>
