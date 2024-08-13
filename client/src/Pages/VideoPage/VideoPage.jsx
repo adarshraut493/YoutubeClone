@@ -169,9 +169,9 @@ function VideoPage({ points, setPoints }) {
         <div className="video_display_screen_videoPage">
           <video
             ref={videoRef}
-            // src={`http://localhost:5500/${vv?.filePath}`}
-            src={`https://youtubeclone1234567890987654321.onrender.com/${vv?.filePath}`}
-            
+            src={`http://localhost:5500/${vv?.filePath}`}
+            // src={`https://youtubeclone8ewsfghj-mcyuiolvcx.onrender.com/${vv?.filePath}`}
+
             className="video_ShowVideo_videoPage"
             controls
           ></video>
@@ -214,8 +214,7 @@ function VideoPage({ points, setPoints }) {
             </div>
             <Link
               to={`/chanel/${vv?.videoChanel}`}
-              className="chanel_details_videoPage"
-            >
+              className="chanel_details_videoPage">
               <p className="chanel_name_videoPage">{vv?.Uploder}</p>
             </Link>
             <div className="comments_VideoPage" ref={commentsRef}>

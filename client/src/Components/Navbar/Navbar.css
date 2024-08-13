@@ -1,15 +1,17 @@
-.Container_Navbar{
+.Container_Navbar {
     border: 1px solid;
     display: flex;
     height: calc(3.5rem - 2px);
     background-color: rgb(33, 33, 33);
     justify-content: space-between;
 }
-.Burger_Logo_Navbar{
+
+.Burger_Logo_Navbar {
     display: flex;
     height: 3.3rem;
 }
-.burger{
+
+.burger {
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -21,70 +23,64 @@
     margin-right: 0.7rem;
     border-radius: 100%;
 }
-.burger p{
+
+.burger p {
     margin: 0.5px;
     width: 1.2rem;
     height: 0.1rem;
     background-color: rgb(255, 244, 244);
 }
-.logo_div_Navbar{
+
+.logo_div_Navbar {
     display: flex;
     text-decoration: none;
 }
-.logo_title_navbar{
+
+.logo_title_navbar {
     margin: auto;
     color: white;
     font-weight: bold;
 }
-.apps_Box{
+
+.apps_Box {
     width: 25px;
     margin: auto 0.7rem;
     height: 25px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    
+
 }
-.appBox{
+
+.appBox {
     border: 1px solid white;
     margin: 0.1rem;
     width: 2px;
     height: 2px;
 }
-.Auth_cont_Navbar{
+
+.Auth_cont_Navbar {
     width: fit-content;
     margin: auto 0.5rem;
     position: relative;
     display: flex;
 }
-.Auth_Btn{
+
+.Auth_Btn {
     cursor: pointer;
     color: #3ea6ff;
-    background-color: rgb(36,36,36);
+    background-color: rgb(36, 36, 36);
     border: 2px solid;
     margin: 0;
     padding: 0.5rem;
     border-radius: 0.1rem;
 }
 
-
-
-
 /* /////////////////////// */
+.join {
+    border-radius: 5px;
+}
 
-.vid_bell_Navbar1 {
-    font-size: 22px; /* Ensures the icon size remains 22px */
-    min-width: 22px; /* Prevents shrinking below 22px */
-    min-height: 22px;
-    flex-shrink: 0; /* Prevents the icon from shrinking */
-    color: antiquewhite;
-  }
-  
-  @media only screen and (max-width: 600px) {
-    .vid_bell_Navbar1 {
-      font-size: 22px; /* Keeps the size consistent even on smaller screens */
-      min-width: 22px;
-      min-height: 22px;
-    }
-  }
-  
+button {
+    background-color: rgb(60, 123, 238);
+}

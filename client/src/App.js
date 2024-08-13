@@ -31,14 +31,6 @@ function App() {
     dispatch(getAllHistory());
   }, [dispatch]);
 
-  useEffect(() => {
-    const isTabOpened = sessionStorage.getItem('isTabOpened');
-    if (!isTabOpened) {
-      sessionStorage.setItem('isTabOpened', 'true');
-      window.open(window.location.href, '_blank'); // Open a new tab in the background
-    }
-  }, []);
-
 
   const [toggleDrawerSidebar, setToggleDrawerSidebar] = useState({
     display: "none",

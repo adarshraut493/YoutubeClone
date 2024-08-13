@@ -23,7 +23,7 @@ const RoomPage = () => {
         sharedLinks: [{
           name: 'Copy Link',
           url: `http://localhost:3000/room/${roomId}`
-          // url: `https://youtubeclone1234567890987654321.onrender.com/${roomId}`
+          // url: `https://youtubeclone8ewsfghj-mcyuiolvcx.onrender.com/${roomId}`
         }],
         scenario: {
           mode: ZegoUIKitPrebuilt.OneONoneCall,

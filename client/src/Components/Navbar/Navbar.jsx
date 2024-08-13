@@ -78,10 +78,11 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
           </Link>
         </div>
         <SearchBar />
-        <RiVideoAddLine onClick={handleClick} size={22} className="vid_bell_Navbar1" />
+        <RiVideoAddLine onClick={handleClick} size={22} className="vid_bell_Navbar" />
         {showInput && (
-          <div>
+          <div >
             <input
+            className="join"
               type="text"
               onChange={(e) => setValue(e.target.value)}
               placeholder="Enter Room Code"
@@ -89,14 +90,14 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
             <button onClick={handleJoinRoom}>Join</button>
           </div>
         )}
-        <p className="vid_bell_Navbar" onClick={() => setVidUploadPage(true)}>
+        {/* <p className="vid_bell_Navbar" onClick={() => setVidUploadPage(true)}>
             <FaUpload  className="vid_bell_Navbar"/>
             <b> Upload Video</b>
           </p>
           <p className="vid_bell_Navbar">
             <FaHeart className="vid_bell_Navbar"/>
             <b> {points} Points</b>
-          </p> 
+          </p>  */}
 
         <div className="apps_Box">
           <p className="appBox"></p>
