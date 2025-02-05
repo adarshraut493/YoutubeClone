@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearHistory } from "../../actions/History";
 import LeftSidebar from "../LeftSidebar/LeftSidebar";
-
+//Watch history list
 import "./WHLcss.css";
 import WHLVideoList from "./WHLVideoList";
 function WHL({ page, videoList }) {

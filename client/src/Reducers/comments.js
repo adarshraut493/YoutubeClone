@@ -5,6 +5,8 @@ const commentReducer = (state = { data: null }, action) => {
 
     case "EDIT_COMMENT":
       return { ...state };
+
+      // 'FETCH_ALL_COMMENTS' updates data with all comments (action.payload)
     case "FETCH_ALL_COMMENTS":
       return { ...state, data: action.payload };
     default:

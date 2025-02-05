@@ -14,6 +14,7 @@ export const login = async(req,res)=>{
                 },process.env.JWT_SECRET,{
                     expiresIn:"1h"
                 })
+                
                 res.status(200).json({result:newUser,token})
             } catch (error) {
                 res.status(500).json({mess:"Something wents wrong..."});

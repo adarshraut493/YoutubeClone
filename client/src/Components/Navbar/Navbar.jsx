@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import "./Navbar.css";
 import logo from "./logo.ico";
 import SearchBar from "./SearchBar/SearchBar";
 import { RiVideoAddLine } from "react-icons/ri";
 import { BiUserCircle } from "react-icons/bi";
-import { GoogleLogin } from "react-google-login";
-import { gapi } from "gapi-script";
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/auth";
 import Auth from "../../Pages/Auth/Auth";
-import { FaHeart, FaUpload } from "react-icons/fa";
 
-function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUploadPage }) {
+function Navbar({ toggleDrawer, setEditCreateChanelBtn }) {
   const [AuthBtn, setAuthBtn] = useState(false);
-  const CurrentUser = useSelector((state) => state.currentUserReducer);
-
   const [showInput, setShowInput] = useState(false);
+  const [value, setValue] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const CurrentUser = useSelector((state) => state.currentUserReducer);
 
   const handleClick = () => {
     const currentTime = new Date();
@@ -32,41 +32,38 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
     }
   };
 
-  const [value, setValue] = useState("");
-
   const handleJoinRoom = useCallback(() => {
     navigate(`/room/${value}`);
   }, [navigate, value]);
 
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: "810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.com",
-        scope: "email",
-      });
-    }
-    gapi.load("client:auth2", start);
-  }, []);
-  
+  const clientId = "810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.com";
 
-  const dispatch = useDispatch();
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        const userInfoRes = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        });
+        const userInfo = await userInfoRes.json();
+        console.log("User Info:", userInfo);
 
-  const onSuccess = (response) => {
-    console.log("Login Success:", response);
-    const Email = response?.profileObj.email;
-    dispatch(login({ email: Email }));
-  };
-  
-  const onFailure = (response) => {
-    console.log("Login Failed:", response);
-  };
-  
+        if (userInfo.email) {
+          dispatch(login({ email: userInfo.email }));
+        } else {
+          console.error("Email not found in Google response");
+        }
+      } catch (error) {
+        console.error("Error fetching Google user info:", error);
+      }
+    },
+    onError: () => console.log("Login Failed"),
+  });
 
   return (
-    <>
+    <GoogleOAuthProvider clientId={clientId}>
       <div className="Container_Navbar">
         <div className="Burger_Logo_Navbar">
-          <div className="burger" onClick={() => toggleDrawer()}>
+          <div className="burger" onClick={toggleDrawer}>
             <p></p>
             <p></p>
             <p></p>
@@ -77,12 +74,14 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
             <p className="logo_title_navbar">YouTube</p>
           </Link>
         </div>
+
         <SearchBar />
+
         <RiVideoAddLine onClick={handleClick} size={22} className="vid_bell_Navbar" />
         {showInput && (
-          <div >
+          <div>
             <input
-            className="join"
+              className="join"
               type="text"
               onChange={(e) => setValue(e.target.value)}
               placeholder="Enter Room Code"
@@ -90,66 +89,29 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
             <button onClick={handleJoinRoom}>Join</button>
           </div>
         )}
-        {/* <p className="vid_bell_Navbar" onClick={() => setVidUploadPage(true)}>
-            <FaUpload  className="vid_bell_Navbar"/>
-            <b> Upload Video</b>
-          </p>
-          <p className="vid_bell_Navbar">
-            <FaHeart className="vid_bell_Navbar"/>
-            <b> {points} Points</b>
-          </p>  */}
 
-        <div className="apps_Box">
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-        </div>
         <IoMdNotificationsOutline size={22} className="vid_bell_Navbar" />
 
         <div className="Auth_cont_Navbar">
           {CurrentUser ? (
-            <>
-              <div className="Chanel_logo_App" onClick={() => setAuthBtn(true)}>
-                <p className="fstChar_logo_App">
-                  {CurrentUser?.result.name ? (
-                    <>{CurrentUser?.result.name.charAt(0).toUpperCase()}</>
-                  ) : (
-                    <>{CurrentUser?.result.email.charAt(0).toUpperCase()}</>
-                  )}
-                </p>
-              </div>
-            </>
+            <div className="Chanel_logo_App" onClick={() => setAuthBtn(true)}>
+              <p className="fstChar_logo_App">
+                {CurrentUser?.result.name
+                  ? CurrentUser.result.name.charAt(0).toUpperCase()
+                  : CurrentUser?.result.email.charAt(0).toUpperCase()}
+              </p>
+            </div>
           ) : (
-            <>
-              <GoogleLogin
-                clientId="810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.com"
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                render={(renderProps) => (
-                  <p onClick={renderProps.onClick} className="Auth_Btn">
-                    <BiUserCircle size={22} />
-                    <b>Sign in</b>
-                  </p>
-                )}
-              />
-            </>
+            <button className="Auth_Btn" onClick={loginWithGoogle}>
+              <BiUserCircle size={20} />
+              Sign
+            </button>
           )}
         </div>
       </div>
-      {AuthBtn && (
-        <Auth
-        setEditCreateChanelBtn={setEditCreateChanelBtn}
-          setAuthBtn={setAuthBtn}
-          User={CurrentUser}
-        />
-      )}
-    </>
+
+      {AuthBtn && <Auth User={CurrentUser} setAuthBtn={setAuthBtn} setEditCreateChanelBtn={setEditCreateChanelBtn} />}
+    </GoogleOAuthProvider>
   );
 }
 

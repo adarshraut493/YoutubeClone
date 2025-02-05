@@ -1,3 +1,10 @@
+// The component displays a comment with the author and timestamp.
+// If the user who posted the comment views it, they see options to edit or delete.
+// Clicking "Edit" allows them to change the comment text.
+// Submitting the edited text triggers the Redux action to save it.
+// Clicking "Delete" removes the comment.
+// This structure helps keep the comment interaction streamlined, and Redux manages any updates so changes apply app-wide.
+
 import moment from "moment";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +18,7 @@ function DisplayComments({
   commentOn,
   userCommented,
 }) {
+
   const [Edit, setEdit] = useState(false);
   const [cmtBdy, setcmtBdy] = useState("");
   const [cmtId, setcmtId] = useState("");
@@ -38,7 +46,7 @@ function DisplayComments({
     }
     setEdit(false);
   };
-  const handleDel=(id)=>{
+  const handleDel = (id) => {
     dispatch(deleteComment(id))
   }
   return (
@@ -73,7 +81,7 @@ function DisplayComments({
       {CurrentUser?.result._id === userId && (
         <p className="EditDel_DisplayCommendt">
           <i onClick={() => handleEdit(cId, commentBody)}>Edit</i>
-          <i onClick={()=> handleDel(cId)} >Delete</i>
+          <i onClick={() => handleDel(cId)} >Delete</i>
         </p>
       )}
     </>

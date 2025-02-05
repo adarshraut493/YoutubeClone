@@ -4,6 +4,7 @@
     height: calc(3.5rem - 2px);
     background-color: rgb(33, 33, 33);
     justify-content: space-between;
+    align-items: center;
 }
 
 .Burger_Logo_Navbar {
@@ -18,7 +19,7 @@
     justify-content: space-evenly;
     margin: 0.2rem;
     padding: 0.5rem;
-    border: 1 px solid transparent;
+    border: 1px solid transparent;
     margin-left: 0.5rem;
     margin-right: 0.7rem;
     border-radius: 100%;
@@ -49,7 +50,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-
 }
 
 .appBox {
@@ -64,19 +64,32 @@
     margin: auto 0.5rem;
     position: relative;
     display: flex;
+    margin-left: auto; /* Aligns the Google login to the right */
 }
 
 .Auth_Btn {
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 5px;
+    border: 1px solid;
+    background: #212121;
     color: #3ea6ff;
-    background-color: rgb(36, 36, 36);
-    border: 2px solid;
-    margin: 0;
-    padding: 0.5rem;
-    border-radius: 0.1rem;
+    cursor: pointer;
+    font-weight: 600;
+
+    transition: background 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* /////////////////////// */
+
+
+.Auth_Btn:disabled {
+    background: #203aa1;
+    cursor: not-allowed;
+}
+
 .join {
     border-radius: 5px;
 }

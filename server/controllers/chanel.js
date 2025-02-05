@@ -36,7 +36,7 @@ export const getAllChanels = async (req, res) => {
         _id: chanel._id,
         name: chanel.name,
         email: chanel.email,
-        desc: chanel.desc,
+        desc: chanel.desc
       });  
     });
     res.status(200).json(allChanelDetails);
