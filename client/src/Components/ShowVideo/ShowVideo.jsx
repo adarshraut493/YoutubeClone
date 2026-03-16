@@ -8,7 +8,7 @@ function ShowVideo({ vid }) {
     <>
       <Link to={`/videopage/${vid?._id}`}>
         <video
-          src={`http://localhost:5500/${vid.filePath}`}
+          src={`${process.env.REACT_APP_API_URL || "http://localhost:5500"}/${vid.filePath}`}
           className="video_ShowVideo"
           preload="metadata"
         />
