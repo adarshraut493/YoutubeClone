@@ -18,96 +18,59 @@ function DrawerSidebar({ toggleDrawer,toggleDrawerSidebar }) {
     <div className="container_DrawaerLeftSidebar" style={toggleDrawerSidebar}>
       <div className="container2_DrawaerLeftSidebar">
         <div className="Drawer_leftsidebar">
-          <NavLink to={'/'} className="icon_sidebar_div">
+          <NavLink to={'/'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <AiOutlineHome
-                size={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <AiOutlineHome size={22} className="icon_sidebar" />
               <div className="text_sidebar_icon">Home</div>
             </p>
           </NavLink>
-          <div className="icon_sidebar_div">
+          <NavLink to={'/explore'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <MdOutlineExplore
-                size={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <MdOutlineExplore size={22} className="icon_sidebar" />
               <div className="text_sidebar_icon">Explore</div>
             </p>
-          </div>
-          <div className="icon_sidebar_div">
+          </NavLink>
+          <NavLink to={'/shorts'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <img
-                src={shorts}
-                width={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <img src={shorts} width={22} className="icon_sidebar" alt="shorts" />
               <div className="text_sidebar_icon">Shorts</div>
             </p>
-          </div>
-          <div className="icon_sidebar_div">
+          </NavLink>
+          <NavLink to={'/subscriptions'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <MdSubscriptions
-                size={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <MdSubscriptions size={22} className="icon_sidebar" />
               <div className="text_sidebar_icon">Subscriptions</div>
             </p>
-          </div>
+          </NavLink>
         </div>
         <div className="libraryBtn_Drawerleftsidebar">
-          <NavLink to={'/library'} className="icon_sidebar_div">
+          <NavLink to={'/library'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <MdOutlineVideoLibrary
-                size={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <MdOutlineVideoLibrary size={22} className="icon_sidebar" />
               <div className="text_sidebar_icon">Library</div>
             </p>
           </NavLink>
-          <NavLink to={'/history'} className="icon_sidebar_div">
+          <NavLink to={'/history'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <FaHistory
-                size={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <FaHistory size={22} className="icon_sidebar" />
               <div className="text_sidebar_icon">History</div>
             </p>
           </NavLink>
-          <NavLink to={'/yourvideos'} className="icon_sidebar_div">
+          <NavLink to={'/yourvideos'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <AiFillPlaySquare
-                size={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <AiFillPlaySquare size={22} className="icon_sidebar" />
               <div className="text_sidebar_icon">Your Videos</div>
             </p>
           </NavLink>
-          <NavLink to={'/watchlater'} className="icon_sidebar_div">
+          <NavLink to={'/watchlater'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <MdOutlineWatchLater
-                size={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <MdOutlineWatchLater size={22} className="icon_sidebar" />
               <div className="text_sidebar_icon">Watch Later</div>
             </p>
           </NavLink>
-          <NavLink to={'/likedvideo'} className="icon_sidebar_div">
+          <NavLink to={'/likedvideo'} className="icon_sidebar_div" onClick={() => toggleDrawer()}>
             <p>
-              <AiFillLike
-                size={22}
-                className={"icon_sidebar"}
-                style={{ margin: "auto 0.7rem" }}
-              />
+              <AiFillLike size={22} className="icon_sidebar" />
               <div className="text_sidebar_icon">Liked Videos</div>
             </p>
           </NavLink>

@@ -1,0 +1,16 @@
+.shorts_container {
+    padding: 24px;
+    color: white;
+    text-align: center;
+    min-height: calc(100vh - 56px);
+}
+
+.shorts_container h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+}
+
+.shorts_container p {
+    font-size: 16px;
+    color: #aaaaaa;
+}

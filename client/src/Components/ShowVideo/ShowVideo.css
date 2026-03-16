@@ -1,56 +1,46 @@
 .video_ShowVideo {
     cursor: pointer;
-    margin: 0.4rem;
-    margin-bottom: 0;
-    width: calc(100% - 0.8rem);
-    height: 53%;
-    border: 1px solid rgba(128, 128, 128, 0.532);
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    object-fit: cover;
+    background-color: #000;
+    transition: border-radius 0.2s;
+}
+
+.video_ShowVideo:hover {
+    border-radius: 0;
 }
 
 .video_description {
     display: flex;
-    height: 5rem;
-    margin: auto auto;
+    gap: 12px;
+    margin-top: 12px;
 }
 
 .video_details {
-    width: 80%;
-    color: aliceblue;
-    padding: 0.1rem;
-    margin: 0.1rem;
-    height: fit-content;
+    flex: 1;
+    min-width: 0;
 }
 
 .title_vid_ShowVideo {
-    margin: 0;
-    font-size: large;
-    font-weight: bolder;
-    color: antiquewhite;
-    display: flex;
-    text-align: clip;
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #f1f1f1;
+    line-height: 20px;
+    max-height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .vid_views_UploadTime {
-    font-size: medium;
-    color: rgba(250, 235, 215, 0.555);
-    margin: 0.2rem;
+    font-size: 12px;
+    color: #aaaaaa;
+    margin: 0;
     display: flex;
-}
-
-.pointsbtn {
-    padding: 10px;
-    border: 1px solid rgb(255, 255, 255);
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-left: 4rem;
-}
-
-.unwatched {
-    color: rgb(255, 255, 255);
-}
-
-.watched {
-    border: grey;
-    color: grey;
+    align-items: center;
+    line-height: 18px;
 }

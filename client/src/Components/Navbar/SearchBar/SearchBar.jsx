@@ -7,8 +7,10 @@ import {useState} from 'react'
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 function SearchBar() {
+  // searchQuery State: Tracks the user's search input.
   const [searchQuery, setSearchQuery] = useState("");
 const [seachListA, setSeachList] = useState(false)
+// TitleArray: Filters video titles in videoReducer to only show those matching the searchQuery.
 const TitleArray = useSelector(s=>s?.videoReducer)
 ?.data?.filter(q=> q?.videoTitle.toUpperCase().includes(searchQuery?.toUpperCase())).map(m=>m?.videoTitle)
 // console.log(TitleArray)
@@ -28,6 +30,7 @@ const TitleArray = useSelector(s=>s?.videoReducer)
               onClick={e=>setSeachList(false)}
             />
             </Link>
+            {/* Search Suggestions (SearchList Component): When the user starts typing, the SearchList component shows filtered video titles. Clicking on a suggestion updates the search input with the selected title. */}
             <BsMicFill className="Mic_SearchBar" />
             {searchQuery&& seachListA &&
               <SearchList

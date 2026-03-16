@@ -7,7 +7,7 @@ export const uploadVideo = (videoData) => async (dispatch) => {
     dispatch({type:'POST_VIDEO',data})
     dispatch(getAllVideo())
   } catch (error) {
-    alert(error.response.data.message)
+    alert(error.response?.data?.message || error.response?.data || "Upload failed")
   }
 };
 
@@ -34,7 +34,6 @@ export const likeVideo=(LikeDate)=>async(dispatch)=>{
 export const viewVideo=(ViewDate)=>async(dispatch)=>{
   try {
     const {id}=ViewDate;
-    console.log(id)
     const {data}= await api.viewsVideo(id)
     dispatch({type:'POST_VIEWS',data})
     dispatch(getAllVideo())
@@ -42,3 +41,13 @@ export const viewVideo=(ViewDate)=>async(dispatch)=>{
     console.log(error)
   }
 }
+
+export const deleteVideo = (id) => async (dispatch) => {
+  try {
+    await api.deleteVideo(id);
+    dispatch({ type: 'DELETE_VIDEO', payload: id });
+    dispatch(getAllVideo());
+  } catch (error) {
+    console.log(error);
+  }
+};

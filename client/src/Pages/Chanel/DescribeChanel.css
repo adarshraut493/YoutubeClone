@@ -1,62 +1,130 @@
 .container3_chanel {
-    border-bottom: 3px solid rgba(1, 26, 96, 0.692);
-    padding: 0.5rem;
-    color: whitesmoke;
+    background-color: #0f0f0f;
+    padding: 0;
+    color: white;
     position: relative;
 }
 
-.chanel_logo_chanel {
-    border: 10px solid rgba(49, 7, 219, 0.66);
-    width: 5rem;
-    height: 5rem;
-    border-radius: 100%;
-    display: flex;
+.chanel_banner {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.chanel_info_section {
+    padding: 24px;
+    max-width: 1280px;
     margin: 0 auto;
-    background-color: rgba(92, 135, 4, 0.769);
+}
+
+.chanel_header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.chanel_logo_chanel {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    display: flex;
+    background-color: white;
+    flex-shrink: 0;
+    margin-top: -80px;
+    border: 4px solid #0f0f0f;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
 .chanel_logo_chanel b {
     margin: auto;
-    font-size: 3rem;
+    font-size: 64px;
+    color: #0f0f0f;
+    font-weight: 600;
 }
 
 .description_chanel {
-    text-align: center;
+    flex: 1;
+    padding-top: 16px;
 }
 
 .description_chanel b {
-    font-size: 4rem;
+    font-size: 36px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
 }
 
 .description_chanel p {
-    font-size: large;
+    font-size: 14px;
+    color: #aaaaaa;
+    line-height: 1.6;
+    margin: 8px 0;
+}
+
+.chanel_actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding-top: 16px;
 }
 
 .uploadbtn_chanel,
-.editbtn_chanel,
-.pointsbtn_chanel {
-    position: absolute;
-    right: 1rem;
-    top: 0.5rem;
-    background-color: blue;
-    padding: 0.5rem;
-    border: 2px solid transparent;
-    border-radius: 0.5rem;
+.editbtn_chanel {
+    background-color: #3ea6ff;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 24px;
     color: white;
-    transition: all 1s;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.uploadbtn_chanel {
-    top: 4rem;
+.editbtn_chanel {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.uploadbtn_chanel:hover,
+.uploadbtn_chanel:hover {
+    background-color: #4db1ff;
+}
+
 .editbtn_chanel:hover {
-    border: 2px solid;
-    color: rgb(231, 140, 14);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.pointsbtn_chanel {
-    top: 7rem
+@media (max-width: 768px) {
+    .chanel_banner {
+        height: 120px;
+    }
+    
+    .chanel_header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .chanel_logo_chanel {
+        width: 120px;
+        height: 120px;
+        margin-top: -60px;
+    }
+    
+    .chanel_logo_chanel b {
+        font-size: 48px;
+    }
+    
+    .description_chanel b {
+        font-size: 28px;
+    }
+    
+    .chanel_actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 }

@@ -1,5 +1,31 @@
 .Container_ShowVideoGrid{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 40px 16px;
+    padding: 24px;
+    max-width: 2560px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+    .Container_ShowVideoGrid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 32px 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .Container_ShowVideoGrid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 24px 8px;
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .Container_ShowVideoGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 12px;
+    }
 }

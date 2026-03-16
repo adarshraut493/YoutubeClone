@@ -32,7 +32,7 @@ export const getComment = async (req, res) => {
         return res.status(404).send("Comments Unavailable..");
       }
       try {
-      await comment.findByIdAndRemove(_id);
+      await comment.findByIdAndDelete(_id);
       res.status(200).json({ message: "deleted comment" });
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -50,7 +50,8 @@ export const getComment = async (req, res) => {
                     _id,
                     {
                         $set: {"commentBody":commentBody}
-                    }
+                    },
+                    { new: true }
                 )
                 res.status(200).json(updateComment)
             } catch (error) {

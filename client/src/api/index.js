@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: `http://localhost:5500/` });
-// const API = axios.create({ baseURL: `https://youtubeclone8ewsfghj-mcyuiolvcx.onrender.com` });
+const API = axios.create({
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5500/",
+});
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("Profile")) {
-    req.headers.authorization = `Bearer ${
+    req.headers.authorization = `Bearer ${  //authorization header
       JSON.parse(localStorage.getItem("Profile")).token
     }`;
   }
@@ -20,6 +21,7 @@ export const fetchAllChanel = () => API.get("/user/getAllChanels");
 export const uploadVideo = (fileData, fileOptions) =>
   API.post("/video/uploadVideo", fileData, fileOptions);
 export const getVideos = () => API.get("/video/getvideos");
+export const deleteVideo = (id) => API.delete(`/video/deleteVideo/${id}`);
 export const likeVideo = (id, Like) => API.patch(`/video/like/${id}`, { Like });
 export const viewsVideo = (id) => API.patch(`/video/view/${id}`);
 

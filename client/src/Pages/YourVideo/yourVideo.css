@@ -2,3 +2,26 @@
     padding: 0.5rem;
     color: white;
 }
+
+.delete_video_row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px 4px 0;
+}
+
+.delete_video_btn {
+    background: transparent;
+    color: #aaa;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 5px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.delete_video_btn:hover {
+    background-color: #cc0000;
+    color: #fff;
+    border-color: #cc0000;
+}

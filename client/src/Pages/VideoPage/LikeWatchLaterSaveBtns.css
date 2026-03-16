@@ -1,17 +1,45 @@
 .btns_cont_videoPage{
     display: flex;
-    flex-grow: 5;
-    flex-direction: row-reverse;
+    gap: 8px;
+    align-items: center;
 }
+
 .btn_VideoPage{
-    margin:  auto 0;
     display: flex;
-}
-.like_videoPage{
-    margin: 0.5rem;
-    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 18px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
+
+.btn_VideoPage:hover{
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.like_videoPage{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.like_videoPage:hover{
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
 .btns_videoPage{
-    margin: auto 0.5rem;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
 }

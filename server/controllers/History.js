@@ -2,15 +2,16 @@ import History from "../models/History.js";
 import mongoose from "mongoose";
 
 export const HistoryController = async (req, res) => {
-  const HistoryData = req.body;
-
-  // console.log(HistoryData);
-  const addToHistory = new History(HistoryData);
-
+  const { videoId, Viewer } = req.body;
   try {
-    await addToHistory.save();
+    // If this video was already watched by this user, just update the timestamp.
+    // If not, create a new entry. This prevents duplicates in history.
+    await History.findOneAndUpdate(
+      { videoId, Viewer },
+      { videoId, Viewer, LikedOn: new Date() },
+      { upsert: true, new: true }
+    );
     res.status(200).json("added to History");
-    // console.log("DOne");
   } catch (error) {
     res.status(400).json(error);
   }

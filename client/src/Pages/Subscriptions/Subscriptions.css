@@ -1,0 +1,16 @@
+.subscriptions_container {
+    padding: 24px;
+    color: white;
+    text-align: center;
+    min-height: calc(100vh - 56px);
+}
+
+.subscriptions_container h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+}
+
+.subscriptions_container p {
+    font-size: 16px;
+    color: #aaaaaa;
+}

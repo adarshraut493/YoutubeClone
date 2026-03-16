@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Navbar from "./Components/Navbar/Navbar";
 import AllRoutes from "./Components/AllRoutes";
+import LeftSidebar from "./Components/LeftSidebar/LeftSidebar";
 import DrawerSidebar from "./Components/LeftSidebar/DrawerSidebar";
 import CreateEditChanel from "./Pages/Chanel/CreateEditChanel";
 import VideoUpload from "./Pages/VideoUpload/VideoUpload";
@@ -42,7 +43,6 @@ function App() {
     });
   };
 
-  const [points, setPoints] = useState(0);
   const [vidUploadPage, setVidUploadPage] = useState(false);
   const [EditCreateChanelBtn, setEditCreateChanelBtn] = useState(false);
 
@@ -56,8 +56,6 @@ function App() {
       <Navbar
         setEditCreateChanelBtn={setEditCreateChanelBtn}
         toggleDrawer={toggleDrawer}
-        points={points}
-        setPoints={setPoints}
         setVidUploadPage={setVidUploadPage}
       />
 
@@ -66,12 +64,15 @@ function App() {
         toggleDrawerSidebar={toggleDrawerSidebar}
       />
 
-      <AllRoutes
-        points={points}
-        setPoints={setPoints}
-        setVidUploadPage={setVidUploadPage}
-        setEditCreateChanelBtn={setEditCreateChanelBtn}
-      />
+      <div className="container_Pages_App">
+        <LeftSidebar />
+        <div className="container2_Pages_App">
+          <AllRoutes
+            setVidUploadPage={setVidUploadPage}
+            setEditCreateChanelBtn={setEditCreateChanelBtn}
+          />
+        </div>
+      </div>
     </Router>
   );
 }

@@ -1,41 +1,80 @@
 .Chanel_logo_App{
-  width: 2.2rem;  
-  height: 2.2rem;
-  margin: auto;
-  border-radius: 100%;
-  background-color: rgb(224,227,214);
+  width: 32px;  
+  height: 32px;
+  margin: 0;
+  border-radius: 50%;
+  background-color: white;
   display: flex;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
+
+.Chanel_logo_App:hover {
+  transform: scale(1.05);
+}
+
 .fstChar_logo_App{
   margin: auto;
-  color: black;
-  font-weight: bolder;
+  color: #0f0f0f;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .container_Pages_App{
   display: flex;
-  background-color: rgb(19,19,19);
+  background-color: #0f0f0f;
+  min-height: 100vh;
 }
+
 .container2_Pages_App{
-  width: calc(100vw - 5rem);
-  height: calc(100vh - 3.65rem);
-  border-top: 2px solid rgb(128,128,128,0.45);
+  flex: 1;
+  height: calc(100vh - 56px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
+
+.container2_Pages_App::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container2_Pages_App::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+.container2_Pages_App::-webkit-scrollbar-thumb {
+  background: #717171;
+  border-radius: 4px;
+}
+
+.container2_Pages_App::-webkit-scrollbar-thumb:hover {
+  background: #909090;
+}
+
 .video_box_app{
-  width: 21rem;
-  height: 23rem;
-  margin-bottom: 1rem;
-  border: 2px solid transparent;
+  width: 100%;
+  max-width: 360px;
+  cursor: pointer;
 }
+
 video {
-  background-color: rgba(8,8,8,0.662);
+  background-color: #000;
 }
+
 .dot{
-  height: 4px;
-  width: 4px;
-  border-radius: 100%;
-  background-color: white;
-  margin: auto 0.5rem;
+  height: 3px;
+  width: 3px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
+  margin: 0 4px;
+}
+
+#credential_picker_container {
+  display: none !important;
+}
+
+iframe[src*="accounts.google.com"] {
+  position: absolute !important;
+  top: 60px !important;
+  right: 10px !important;
 }

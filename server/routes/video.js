@@ -1,6 +1,6 @@
 import express from 'express'
 
-import {uploadVideo,getAllvideos} from '../controllers/video.js'
+import {uploadVideo, getAllvideos, deleteVideo} from '../controllers/video.js'
 import {likeController} from '../controllers/like.js'
 import {viewController} from '../controllers/views.js'
 import {likeVideoController,getAlllikeVideoController,deleteLikeVideoController} from '../controllers/likeVideo.js'
@@ -14,6 +14,7 @@ const routes=express.Router();
 routes.post("/uploadVideo",auth,upload.single("file"),uploadVideo)
 
 routes.get("/getvideos",getAllvideos);
+routes.delete("/deleteVideo/:id", auth, deleteVideo);
 routes.patch('/like/:id',auth,likeController)
 routes.patch('/view/:id',viewController)
 

@@ -1,82 +1,199 @@
 .container_leftSidebar {
-  background-color: rgb(37, 37, 37);
-  width: 4.7rem;
-  height: calc(100vh - 3.55rem);
+  background-color: #0f0f0f;
+  width: 240px;
+  height: calc(100vh - 56px);
   box-sizing: border-box;
   overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 0;
 }
+
+.container_leftSidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container_leftSidebar::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+.container_leftSidebar::-webkit-scrollbar-thumb {
+  background: #717171;
+  border-radius: 4px;
+}
+
 .icon_sidebar_div {
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.855);
+  color: white;
   text-decoration: none;
   display: flex;
-  flex-direction: column;
-  padding: 0.5rem;
+  align-items: center;
+  padding: 10px 24px;
+  transition: background-color 0.2s;
+  gap: 24px;
 }
+
 .icon_sidebar {
-    margin: auto;
+  flex-shrink: 0;
 }
+
 .text_sidebar_icon{
-    text-align: center;
-    font-weight: 300;
-    font-size: 0.85rem;
-    padding: 0.2rem;
-
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
 }
-.icon_sidebar_div:hover,
+
+.icon_sidebar_div:hover{
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .icon_sidebar_div.active{
-    color: aliceblue;
-    background-color: rgb(68,68,68);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
-/** drawer sidebar*/
 .container_DrawaerLeftSidebar{
-  position: absolute;
+  position: fixed;
   display: flex;
   width: 100vw;
-  z-index: 500;
+  height: 100vh;
+  top: 56px;
+  left: 0;
+  z-index: 999;
 }
+
 .container2_DrawaerLeftSidebar{
-  height: calc(100vh - 3.6rem);
+  height: calc(100vh - 56px);
   overflow-y: auto;
-  background-color: rgb(28,28,28);
-  width: 15rem;
+  background-color: #0f0f0f;
+  width: 240px;
+  padding: 12px 0;
 }
+
+.container2_DrawaerLeftSidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container2_DrawaerLeftSidebar::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+.container2_DrawaerLeftSidebar::-webkit-scrollbar-thumb {
+  background: #717171;
+  border-radius: 4px;
+}
+
 .Drawer_leftsidebar,
 .libraryBtn_Drawerleftsidebar{
-  padding-top: 0.5rem;
-  border-bottom: 2px solid rgba(128,128,128,0.293);
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .icon_sidebar_div p{
   display: flex;
+  align-items: center;
   margin: 0;
+  gap: 24px;
+  padding: 10px 24px;
+  font-size: 14px;
+  width: 100%;
 }
+
+.icon_sidebar_div p .icon_sidebar {
+  margin: 0 !important;
+}
+
+.icon_sidebar_div p .text_sidebar_icon {
+  flex: 1;
+}
+
 .subScriptions_lsdbar{
-  color:white;
+  color: white;
+  padding: 8px 0;
 }
+
 .subScriptions_lsdbar h3{
-  text-decoration: underline;
-  margin: 20px 10px;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 8px 24px;
+  padding: 8px 0;
 }
+
 .chanel_lsdbar{
   display: flex;
+  align-items: center;
   cursor: pointer;
+  padding: 8px 24px;
+  transition: background-color 0.2s;
 }
+
 .chanel_lsdbar:hover{
-  color: rgb(77,77,243);
+  background-color: rgba(255, 255, 255, 0.1);
 }
+
 .chanel_lsdbar p{
-  border: 1px solid;
-  background-color: grey;
-  padding: 0.5rem;
-  border-radius: 100%;
-  margin: 1rem;
+  width: 24px;
+  height: 24px;
+  background-color: #717171;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: 12px;
 }
+
 .chanel_lsdbar div{
-  margin: auto;
-  width: 60%;
+  margin-left: 24px;
+  font-size: 14px;
 }
+
 .container3_DrawaerLeftSidebar{
   flex-grow: 1;
-  background-color: rgba(0, 0, 0, 0.488);
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 768px) {
+  .container_leftSidebar {
+    width: 0;
+    display: none;
+  }
+  
+  .container2_DrawaerLeftSidebar {
+    width: 200px;
+  }
+}
+
+@media (max-width: 1312px) {
+  .container_leftSidebar {
+    width: 72px;
+  }
+  
+  .icon_sidebar_div {
+    flex-direction: column;
+    padding: 16px 0;
+    gap: 6px;
+  }
+  
+  .text_sidebar_icon {
+    font-size: 10px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .container2_DrawaerLeftSidebar {
+    width: 180px;
+  }
+  
+  .icon_sidebar_div p {
+    padding: 0 16px;
+    gap: 16px;
+  }
+  
+  .chanel_lsdbar {
+    padding: 8px 16px;
+  }
+  
+  .subScriptions_lsdbar h3 {
+    margin: 8px 16px;
+  }
 }

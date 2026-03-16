@@ -11,18 +11,18 @@ function LeftSidebar() {
             <AiOutlineHome size={22} className="icon_sidebar"/>
             <div className="text_sidebar_icon">Home</div>
         </NavLink>
-        <div className='icon_sidebar_div' >
+        <NavLink to={'/explore'} className='icon_sidebar_div' >
             <MdOutlineExplore size={22} className="icon_sidebar"/>
             <div className="text_sidebar_icon">Explore</div>
-        </div>
-        <div className='icon_sidebar_div' >
-            <img src={shorts} width={22} className="icon_sidebar"/>
+        </NavLink>
+        <NavLink to={'/shorts'} className='icon_sidebar_div' >
+            <img src={shorts} width={22} className="icon_sidebar" alt="shorts"/>
             <div className="text_sidebar_icon">Shorts</div>
-        </div>
-        <div className='icon_sidebar_div' >
+        </NavLink>
+        <NavLink to={'/subscriptions'} className='icon_sidebar_div' >
             <MdOutlineSubscriptions size={22} className="icon_sidebar"/>
-            <div className="text_sidebar_icon" style={{fontSize:"12px"}}>Subcriptions</div>
-        </div>
+            <div className="text_sidebar_icon">Subscriptions</div>
+        </NavLink>
         <NavLink to={'/library'} className='icon_sidebar_div' >
             <MdOutlineVideoLibrary size={22} className="icon_sidebar"/>
             <div className="text_sidebar_icon">Library</div>

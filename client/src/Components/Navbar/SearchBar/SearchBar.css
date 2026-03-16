@@ -1,47 +1,119 @@
 .SearchBar_Container {
-  margin: auto;
-  flex-grow: 2;
+  flex: 1;
+  max-width: 640px;
   display: flex;
-  height: 2rem;
+  align-items: center;
+  justify-content: center;
 }
+
 .SearchBar_Container2 {
-  margin: auto;
+  width: 100%;
 }
+
 .search_div {
   display: flex;
-  margin: auto;
+  align-items: center;
   position: relative;
-  z-index: 91;
 }
+
 .iBox_SearchBar {
-  background-color: rgb(18, 18, 18);
-  width: 30rem;
-  border: 1px solid rgba(128, 128, 128, 0.4);
-  color: white;
-  font-size: large;
-  padding: 0.2rem;
-  height: 2rem;
-  padding-left: 2rem;
+  background-color: #121212;
+  width: 100%;
+  max-width: 540px;
+  border: 1px solid #303030;
+  color: #f1f1f1;
+  font-size: 16px;
+  padding: 0 16px 0 40px;
+  height: 40px;
+  border-radius: 40px 0 0 40px;
+  outline: none;
+  transition: border-color 0.2s;
 }
+
+.iBox_SearchBar:focus {
+  border-color: #1c62b9;
+}
+
+.iBox_SearchBar::placeholder {
+  color: #888;
+}
+
 .searchIcon_SearchBar{
-    cursor: pointer;
-    padding: 0.75rem;
-    width: 2rem;
-    border-radius: 0.1rem;
-    background-color: rgb(78, 78, 78);
-    color: aliceblue;
+  cursor: pointer;
+  padding: 0 24px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 40px 40px 0;
+  background-color: #222;
+  color: white;
+  border: 1px solid #303030;
+  border-left: none;
+  transition: background-color 0.2s;
+  min-width: 64px;
 }
+
 .searchIcon_SearchBar:hover{
-    background-color: rgb(71, 71, 71);
+  background-color: #2a2a2a;
 }
+
 .Mic_SearchBar{
-    border-radius: 100%;
-    padding: 0.5rem;
-    background-color: rgb(51, 51, 51);
+  border-radius: 50%;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #181818;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.Mic_SearchBar:hover {
+  background-color: #2a2a2a;
 }
 
 .vid_bell_Navbar,
 .Mic_SearchBar{
-    color: whitesmoke;
-    margin: auto 0.7rem;
+  color: white;
+  margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+  .SearchBar_Container {
+    max-width: 400px;
+  }
+  
+  .iBox_SearchBar {
+    max-width: 300px;
+    font-size: 14px;
+    padding: 0 12px 0 32px;
+  }
+  
+  .searchIcon_SearchBar {
+    padding: 0 16px;
+    min-width: 48px;
+  }
+  
+  .Mic_SearchBar {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .SearchBar_Container {
+    max-width: 200px;
+  }
+  
+  .iBox_SearchBar {
+    max-width: 150px;
+    padding: 0 8px 0 24px;
+  }
+  
+  .searchIcon_SearchBar {
+    padding: 0 12px;
+    min-width: 40px;
+  }
 }

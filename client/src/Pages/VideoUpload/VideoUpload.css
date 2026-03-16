@@ -1,56 +1,190 @@
+/* Overlay */
 .container_VidUpload {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 100;
-  display: flex;
-}
-.container2_VidUpload {
-  box-shadow: 2px 2px rgba(142, 142, 142, 0.681),
-    -2px -2px rgba(142, 142, 142, 0.681);
-  padding: 1rem;
-  width: fit-content;
-  height: fit-content;
-  background-color: black;
-  color: rgb(136, 133, 129);
-  position: relative;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  border-radius: 1rem;
-}
-.ibox_vidupload {
-  margin: 0.5rem;
-  font-size: larger;
-  border-radius: 5px;
-  background-color: transparent;
-  padding: 0.2rem;
-  color: aliceblue;
-  width: calc(100% - 2rem);
-}
-.ibox_div_vidupload {
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2000;
   display: flex;
   align-items: center;
-  background-color: transparent;
-  flex-direction: column;
-  width: 100%;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Modal card */
+.container2_VidUpload {
+  background-color: #212121;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+  animation: slideUp 0.25s ease;
+  overflow: hidden;
+}
+
+/* Header */
+.vidupload_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+}
+
+.vidupload_title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.vidupload_close {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 18px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.vidupload_close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Divider */
+.vidupload_divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Form body */
+.vidupload_body {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.vidupload_label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+}
+
+/* Title input */
+.ibox_vidupload {
+  background-color: #2c2c2c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 16px;
+}
+
+.ibox_vidupload:focus {
+  border-color: #3ea6ff;
+}
+
+.ibox_vidupload::placeholder {
+  color: #555;
+}
+
+/* File drop area */
+.vidupload_filedrop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 24px 16px;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, background-color 0.2s;
+  margin-bottom: 20px;
+}
+
+.vidupload_filedrop:hover {
+  border-color: #3ea6ff;
+  background-color: rgba(62, 166, 255, 0.05);
+}
+
+.vidupload_fileicon {
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+.vidupload_filename {
+  font-size: 14px;
+  color: #e0e0e0;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.vidupload_filesub {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Upload button */
 .btn_vidUpload {
-    background-color: black;
-    color: white;
-    font-weight: bolder;
-    border: 2px solid;
-    
+  background-color: #3ea6ff;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  padding: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s;
 }
 
 .btn_vidUpload:hover {
-    color: orange;
+  background-color: #5bb8ff;
 }
 
-.loader{
-    width: 7rem;
-    height: 7rem;
-    padding: 2rem 0;
-    margin: auto;
+/* Progress */
+.vidupload_progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  gap: 10px;
+}
+
+.loader {
+  width: 72px;
+  height: 72px;
+}
+
+.vidupload_progress_label {
+  margin: 0;
+  font-size: 13px;
+  color: #aaa;
 }

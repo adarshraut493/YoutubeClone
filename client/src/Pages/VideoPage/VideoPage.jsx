@@ -6,226 +6,276 @@ import moment from "moment";
 import LikeWatchLaterSaveBtns from "./LikeWatchLaterSaveBtns";
 import "./VideoPage.css";
 import { addToHistory } from "../../actions/History";
-import { viewVideo } from "../../actions/video";
-import axios from "axios";
+import { viewVideo, deleteVideo } from "../../actions/video";
 
-function VideoPage({ points, setPoints }) {
+function CustomControls({ videoRef, isPlaying, togglePlay }) {
+  const [progress, setProgress] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const onTimeUpdate = () => {
+      setCurrentTime(video.currentTime);
+      setProgress((video.currentTime / video.duration) * 100 || 0);
+    };
+    const onLoadedMetadata = () => setDuration(video.duration);
+    video.addEventListener("timeupdate", onTimeUpdate);
+    video.addEventListener("loadedmetadata", onLoadedMetadata);
+    return () => {
+      video.removeEventListener("timeupdate", onTimeUpdate);
+      video.removeEventListener("loadedmetadata", onLoadedMetadata);
+    };
+  }, [videoRef]);
+
+  const formatTime = (t) => {
+    if (!t || isNaN(t)) return "0:00";
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
+  const handleSeek = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    videoRef.current.currentTime = ratio * videoRef.current.duration;
+  };
+
+  const handleVolume = (e) => {
+    const v = parseFloat(e.target.value);
+    setVolume(v);
+    videoRef.current.volume = v;
+  };
+
+  const handleFullscreen = () => {
+    if (videoRef.current.requestFullscreen) videoRef.current.requestFullscreen();
+  };
+
+  return (
+    <div className="custom_controls">
+      <div className="progress_bar" onClick={handleSeek}>
+        <div className="progress_fill" style={{ width: `${progress}%` }} />
+      </div>
+      <div className="controls_row">
+        <button className="ctrl_btn" onClick={togglePlay}>
+          {isPlaying ? "⏸" : "▶"}
+        </button>
+        <span className="ctrl_time">{formatTime(currentTime)} / {formatTime(duration)}</span>
+        <div className="ctrl_volume">
+          <span>🔊</span>
+          <input type="range" min="0" max="1" step="0.05" value={volume} onChange={handleVolume} className="volume_slider" />
+        </div>
+        <button className="ctrl_btn ctrl_fullscreen" onClick={handleFullscreen}>⛶</button>
+      </div>
+    </div>
+  );
+}
+
+function VideoPage() {
   const { vid } = useParams();
   const videoRef = useRef(null);
   const commentsRef = useRef(null);
-  const [location, setLocation] = useState("");
-  const [temperature, setTemperature] = useState("");
+  const tapTimerRef = useRef(null);
+  const tapCountRef = useRef(0);
+  const holdTimerRef = useRef(null);
+
+  const [seekIndicator, setSeekIndicator] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed2x, setSpeed2x] = useState(false);
 
   const dispatch = useDispatch();
-  const CurrentUser = useSelector((state) => state?.currentUserReducer);
   const navigate = useNavigate();
-
+  const CurrentUser = useSelector((state) => state?.currentUserReducer);
   const vids = useSelector((state) => state.videoReducer);
-
-  const vv = vids?.data.find((q) => q._id === vid);
+  const vv = vids?.data?.find((q) => q._id === vid);
 
   const handleHistory = useCallback(() => {
     if (!CurrentUser) return;
-    dispatch(
-      addToHistory({
-        videoId: vid,
-        Viewer: CurrentUser?.result._id,
-      })
-    );
+    dispatch(addToHistory({ videoId: vid, Viewer: CurrentUser?.result._id }));
   }, [dispatch, vid, CurrentUser]);
 
   const handleViews = useCallback(() => {
-    dispatch(
-      viewVideo({
-        id: vid,
-      })
-    );
+    dispatch(viewVideo({ id: vid }));
   }, [dispatch, vid]);
 
   useEffect(() => {
-    if (CurrentUser) {
-      handleHistory();
-    }
+    if (CurrentUser) handleHistory();
     handleViews();
   }, [CurrentUser, handleHistory, handleViews]);
 
-  const fetchWeather = async (latitude, longitude) => {
-    try {
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather`,
-        {
-          params: {
-            lat: latitude,
-            lon: longitude,
-            appid: "a35fc364b21d6422b38db06ce159175f",
-            units: "metric",
-          },
-        }
-      );
-      setTemperature(response.data.main.temp);
-      setLocation(response.data.name);
-      alert(
-        `Location: ${response.data.name}, Temperature: ${response.data.main.temp}°C`
-      );
-    } catch (error) {
-      console.error("Error fetching weather data:", error);
-    }
+  const showSeekIndicator = (direction) => {
+    setSeekIndicator(direction);
+    setTimeout(() => setSeekIndicator(null), 700);
   };
 
-  const fetchLocationAndWeather = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        fetchWeather(position.coords.latitude, position.coords.longitude);
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-      }
-    );
-  };
-
-  const handleDoubleTap = (direction) => {
-    const currentTime = videoRef.current.currentTime;
+  const seek = (direction) => {
+    if (!videoRef.current) return;
     if (direction === "forward") {
-      videoRef.current.currentTime = currentTime + 10;
-    } else if (direction === "backward") {
-      videoRef.current.currentTime = currentTime - 10;
+      videoRef.current.currentTime = Math.min(videoRef.current.currentTime + 10, videoRef.current.duration);
+      showSeekIndicator("forward");
+    } else {
+      videoRef.current.currentTime = Math.max(videoRef.current.currentTime - 10, 0);
+      showSeekIndicator("backward");
     }
   };
 
-  const handleTripleTap = (element) => {
-    if (element === "tap-right") {
-      if (window.confirm("Are you sure you want to close the tab?")) {
-        window.close();
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const handleZoneClick = (direction) => {
+    tapCountRef.current += 1;
+    clearTimeout(tapTimerRef.current);
+    tapTimerRef.current = setTimeout(() => {
+      if (tapCountRef.current === 1) {
+        togglePlay();
+      } else if (tapCountRef.current >= 2) {
+        seek(direction);
       }
-    } else if (element === "tap-left") {
-      commentsRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if (element === "blue-rectangle") {
-      const nextVid = getNextVideoId();
-      navigate(`/videopage/${nextVid}`);
-    }
+      tapCountRef.current = 0;
+    }, 250);
   };
 
-  let tapCount = 0;
-  let tapTimeout;
-
-  const handleTap = (element, direction) => {
-    tapCount++;
-    clearTimeout(tapTimeout);
-
-    tapTimeout = setTimeout(() => {
-      if (tapCount === 1) {
-        if (element === "blue-rectangle" || element === "tap-left" || element === "tap-right") {
-          if (videoRef.current.paused) {
-            increasePoints();
-          }
-        }
-
-        if (videoRef.current.paused) {
-          videoRef.current.play();
-          increasePoints();
-        } else {
-          videoRef.current.pause();
-        }
-      } else if (tapCount === 2) {
-        handleDoubleTap(direction);
-      } else if (tapCount === 3) {
-        handleTripleTap(element);
+  const handleHoldStart = () => {
+    holdTimerRef.current = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.playbackRate = 2.0;
+        setSpeed2x(true);
       }
-      tapCount = 0;
-    }, 300);
-  };
-
-  const handleHoldStart = (direction) => {
-    if (direction === "forward") {
-      videoRef.current.playbackRate = 2.0;
-    } else if (direction === "backward") {
-      videoRef.current.playbackRate = 0.5;
-    }
+    }, 500);
   };
 
   const handleHoldEnd = () => {
-    videoRef.current.playbackRate = 1.0;
-  };
-
-  const getNextVideoId = () => {
-    const currentIndex = vids?.data.findIndex((video) => video._id === vid);
-    const nextIndex = (currentIndex + 1) % vids?.data.length;
-
-    return vids?.data[nextIndex]?._id;
-  };
-
-  const increasePoints = () => {
-    const watchedVideos = JSON.parse(localStorage.getItem("watchedVideos") || "[]");
-    if (!watchedVideos.includes(vid)) {
-      setPoints(prevPoints => prevPoints + 5);
-      watchedVideos.push(vid);
-      localStorage.setItem("watchedVideos", JSON.stringify(watchedVideos));
+    clearTimeout(holdTimerRef.current);
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 1.0;
+      setSpeed2x(false);
     }
   };
+
+  if (!vv) return <div style={{ color: "white", padding: "24px" }}>Loading...</div>;
 
   return (
     <div className="container_videoPage">
       <div className="container2_videoPage">
         <div className="video_display_screen_videoPage">
-          <video
-            ref={videoRef}
-            src={`http://localhost:5500/${vv?.filePath}`}
-            // src={`https://youtubeclone8ewsfghj-mcyuiolvcx.onrender.com/${vv?.filePath}`}
 
-            className="video_ShowVideo_videoPage"
-            controls
-          ></video>
-          <div
-            className="weather-icon"
-            onClick={fetchLocationAndWeather}
-          ></div>
-          <div
-            className="tap-left"
-            onClick={() => handleTap("tap-left", "backward")}
-            onMouseDown={() => handleHoldStart("backward")}
-            onMouseUp={handleHoldEnd}
-            onTouchStart={() => handleHoldStart("backward")}
-            onTouchEnd={handleHoldEnd}
-            onDoubleClick={() => handleDoubleTap("backward")}
-          ></div>
-          <div
-            className="tap-right"
-            onClick={() => handleTap("tap-right", "forward")}
-            onMouseDown={() => handleHoldStart("forward")}
-            onMouseUp={handleHoldEnd}
-            onTouchStart={() => handleHoldStart("forward")}
-            onTouchEnd={handleHoldEnd}
-            onDoubleClick={() => handleDoubleTap("forward")}
-          ></div>
-          <div
-            className="blue-rectangle"
-            onClick={() => handleTap("blue-rectangle", "forward")}
-          ></div>
-          <div className="video_details_videoPage">
-            <div className="video_btns_title_VideoPage_cont">
-              <p className="video_title_VideoPage">{vv?.videoTitle}</p>
-              <div className="views_date_btns_VideoPage">
-                <div className="views_videoPage">
-                  {vv?.Views} views <div className="dot"></div>{" "}
-                  {moment(vv?.createdAt).fromNow()}
+          <div className="video_wrapper_videoPage">
+            <video
+              ref={videoRef}
+              src={`http://localhost:5500/${vv?.filePath}`}
+              className="video_ShowVideo_videoPage"
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+            />
+
+            {/* 2x speed indicator */}
+            {speed2x && (
+              <div className="speed_indicator">▶▶ 2x</div>
+            )}
+
+            {/* Left tap zone */}
+            <div
+              className="tap_zone tap_zone_left"
+              onClick={() => handleZoneClick("backward")}
+              onMouseDown={handleHoldStart}
+              onMouseUp={handleHoldEnd}
+              onMouseLeave={handleHoldEnd}
+              onTouchStart={handleHoldStart}
+              onTouchEnd={handleHoldEnd}
+            >
+              {seekIndicator === "backward" && (
+                <div className="seek_indicator seek_indicator_left">
+                  <div className="seek_ripple" />
+                  <span>◀◀ 10s</span>
                 </div>
-                <LikeWatchLaterSaveBtns vv={vv} vid={vid} />
+              )}
+            </div>
+
+            {/* Center zone - play/pause */}
+            <div
+              className="tap_zone tap_zone_center"
+              onClick={togglePlay}
+              onMouseDown={handleHoldStart}
+              onMouseUp={handleHoldEnd}
+              onMouseLeave={handleHoldEnd}
+              onTouchStart={handleHoldStart}
+              onTouchEnd={handleHoldEnd}
+            />
+
+            {/* Right tap zone */}
+            <div
+              className="tap_zone tap_zone_right"
+              onClick={() => handleZoneClick("forward")}
+              onMouseDown={handleHoldStart}
+              onMouseUp={handleHoldEnd}
+              onMouseLeave={handleHoldEnd}
+              onTouchStart={handleHoldStart}
+              onTouchEnd={handleHoldEnd}
+            >
+              {seekIndicator === "forward" && (
+                <div className="seek_indicator seek_indicator_right">
+                  <div className="seek_ripple" />
+                  <span>10s ▶▶</span>
+                </div>
+              )}
+            </div>
+
+            {/* Center play icon when paused */}
+            {!isPlaying && (
+              <div className="center_play_icon" onClick={togglePlay}>▶</div>
+            )}
+
+            <CustomControls videoRef={videoRef} isPlaying={isPlaying} togglePlay={togglePlay} />
+          </div>
+
+          <div className="video_btns_title_VideoPage_cont">
+            <p className="video_title_VideoPage">{vv?.videoTitle}</p>
+            <div className="views_date_btns_VideoPage">
+              <div className="views_videoPage">
+                {vv?.Views} views <div className="dot"></div>
+                {moment(vv?.createdAt).fromNow()}
               </div>
+              <LikeWatchLaterSaveBtns vv={vv} vid={vid} />
             </div>
-            <Link
-              to={`/chanel/${vv?.videoChanel}`}
-              className="chanel_details_videoPage">
-              <p className="chanel_name_videoPage">{vv?.Uploder}</p>
-            </Link>
-            <div className="comments_VideoPage" ref={commentsRef}>
-              <h2>
-                <u>Comments</u>
-              </h2>
-              <Comments videoId={vv._id} />
+            {CurrentUser?.result?._id === vv?.videoChanel && (
+              <button
+                className="delete_video_btn"
+                onClick={() => {
+                  if (window.confirm("Delete this video permanently?")) {
+                    dispatch(deleteVideo(vid));
+                    navigate("/");
+                  }
+                }}
+              >
+                🗑 Delete Video
+              </button>
+            )}
+          </div>
+
+          <Link to={`/chanel/${vv?.videoChanel}`} className="chanel_details_videoPage">
+            <div className="chanel_logo_videoPage">
+              <p>{vv?.Uploder?.charAt(0).toUpperCase()}</p>
             </div>
+            <p className="chanel_name_videoPage">{vv?.Uploder}</p>
+          </Link>
+
+          <div className="comments_VideoPage" ref={commentsRef}>
+            <h2 style={{ marginBottom: "16px", fontSize: "18px", fontWeight: "500" }}>Comments</h2>
+            <Comments videoId={vv._id} />
           </div>
         </div>
-        <div className="moreVideoBar">More video</div>
+
+        <div className="moreVideoBar">More Videos</div>
       </div>
     </div>
   );

@@ -35,41 +35,37 @@ function CreateEditChanel ({setEditCreateChanelBtn}) {
     }
   };
   return (
-    <div className="container_CreateEditChanel">
-      <input
-        onClick={() => setEditCreateChanelBtn(false)}
-        type="submit"
-        name="text"
-        value={"X"}
-        className="ibtn_x"
-      />
-      <div className="container2_CreateEditChanel">
+    <div className="container_CreateEditChanel" onClick={() => setEditCreateChanelBtn(false)}>
+      <div className="container2_CreateEditChanel" onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={() => setEditCreateChanelBtn(false)}
+          className="ibtn_x"
+        >
+          ×
+        </button>
         <h1>
-          {CurrentUser?.result.name ? <>Edit</> : <>Create </>}
-          Your Chanel
+          {CurrentUser?.result.name ? "Edit" : "Create"} Your Channel
         </h1>
         <input
           type="text"
-          placeholder="Enter Your/Chanel Name"
+          placeholder="Enter Your Channel Name"
           className="ibox"
-          name="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <textarea
-          type="text"
-          rows={15}
-          placeholder={"Enter Chanel Description"}
-          className={"ibox"}
+          rows={8}
+          placeholder="Enter Channel Description"
+          className="ibox"
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />
-        <input
-          type="submit"
-          value={"Submit"}
+        <button
           onClick={handleSubmit}
           className="ibtn"
-        />
+        >
+          Submit
+        </button>
       </div>
     </div>
   );

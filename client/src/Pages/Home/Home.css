@@ -1,19 +1,72 @@
 .navigation_Home{
     color: white;
-    background-color: rgb(37,37,37);
+    background-color: #0f0f0f;
     position: sticky;
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
     top: 0;
-    border-bottom: 2px solid rgb(128,128,128,0.27);
+    z-index: 100;
+    padding: 12px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.navigation_Home::-webkit-scrollbar {
+    display: none;
+}
+
 .btn_nav_home{
-    background-color: rgb(46,46,46);
-    margin: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 45px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    margin-right: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
     cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    border: none;
 }
+
 .btn_nav_home:hover{
-    background-color: rgb(128,128,128);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn_nav_home:first-child {
+    background-color: white;
+    color: #0f0f0f;
+}
+
+.btn_nav_home:first-child:hover {
+    background-color: #e5e5e5;
+}
+
+.btn_nav_home_active {
+    background-color: white !important;
+    color: #0f0f0f !important;
+}
+
+@media (max-width: 768px) {
+    .navigation_Home {
+        padding: 12px 16px;
+    }
+    
+    .btn_nav_home {
+        font-size: 13px;
+        padding: 6px 10px;
+        margin-right: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navigation_Home {
+        padding: 8px 12px;
+    }
+    
+    .btn_nav_home {
+        font-size: 12px;
+        padding: 6px 8px;
+        margin-right: 6px;
+    }
 }

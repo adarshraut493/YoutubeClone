@@ -4,16 +4,16 @@ import logo from "./logo.ico";
 import SearchBar from "./SearchBar/SearchBar";
 import { RiVideoAddLine } from "react-icons/ri";
 import { BiUserCircle } from "react-icons/bi";
-import { GoogleLogin } from "react-google-login";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import { gapi } from "gapi-script";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/auth";
 import Auth from "../../Pages/Auth/Auth";
-import { FaHeart, FaUpload } from "react-icons/fa";
 
-function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUploadPage }) {
+function Navbar({ toggleDrawer, setEditCreateChanelBtn, setVidUploadPage }) {
   const [AuthBtn, setAuthBtn] = useState(false);
   const CurrentUser = useSelector((state) => state.currentUserReducer);
 
@@ -32,20 +32,25 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
     }
   };
 
+  
   const [value, setValue] = useState("");
 
   const handleJoinRoom = useCallback(() => {
     navigate(`/room/${value}`);
   }, [navigate, value]);
 
+  const clientId = "810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.com";
+
   useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: "810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.com",
-        scope: "email",
+    const start = () => {
+      gapi.load("auth2", () => {
+        gapi.auth2
+          .init({ client_id: clientId })
+          .then(() => console.log("Google API initialized"))
+          .catch((err) => console.error("Google API init error", err));
       });
-    }
-    gapi.load("client:auth2", start);
+    };
+    start();
   }, []);
   
 
@@ -53,7 +58,8 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
 
   const onSuccess = (response) => {
     console.log("Login Success:", response);
-    const Email = response?.profileObj.email;
+    const decoded = jwtDecode(response.credential);
+    const Email = decoded.email;
     dispatch(login({ email: Email }));
   };
   
@@ -77,44 +83,16 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
             <p className="logo_title_navbar">YouTube</p>
           </Link>
         </div>
+        
         <SearchBar />
-        <RiVideoAddLine onClick={handleClick} size={22} className="vid_bell_Navbar" />
-        {showInput && (
-          <div >
-            <input
-            className="join"
-              type="text"
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="Enter Room Code"
-            />
-            <button onClick={handleJoinRoom}>Join</button>
-          </div>
-        )}
-        {/* <p className="vid_bell_Navbar" onClick={() => setVidUploadPage(true)}>
-            <FaUpload  className="vid_bell_Navbar"/>
-            <b> Upload Video</b>
-          </p>
-          <p className="vid_bell_Navbar">
-            <FaHeart className="vid_bell_Navbar"/>
-            <b> {points} Points</b>
-          </p>  */}
+        
+        <div className="right_navbar_container">
+          <RiVideoAddLine onClick={handleClick} size={24} className="vid_bell_Navbar" title="Create room" />
+          
+          <IoMdNotificationsOutline size={24} className="vid_bell_Navbar" title="Notifications" />
 
-        <div className="apps_Box">
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-          <p className="appBox"></p>
-        </div>
-        <IoMdNotificationsOutline size={22} className="vid_bell_Navbar" />
-
-        <div className="Auth_cont_Navbar">
-          {CurrentUser ? (
-            <>
+          <div className="Auth_cont_Navbar">
+            {CurrentUser ? (
               <div className="Chanel_logo_App" onClick={() => setAuthBtn(true)}>
                 <p className="fstChar_logo_App">
                   {CurrentUser?.result.name ? (
@@ -124,29 +102,50 @@ function Navbar({ toggleDrawer, setEditCreateChanelBtn , points, Cid, setVidUplo
                   )}
                 </p>
               </div>
-            </>
-          ) : (
-            <>
-              <GoogleLogin
-                clientId="810354537421-ohdp6388hgpfbnu5r5s49g7ad9gfc1fo.apps.googleusercontent.com"
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                render={(renderProps) => (
-                  <p onClick={renderProps.onClick} className="Auth_Btn">
-                    <BiUserCircle size={22} />
-                    <b>Sign in</b>
-                  </p>
-                )}
-              />
-            </>
-          )}
+            ) : (
+              <GoogleOAuthProvider clientId={clientId}>
+                <div onClick={() => document.querySelector('[role="button"]')?.click()} className="custom_signin_btn">
+                  <BiUserCircle size={24} />
+                  <span>Sign in</span>
+                </div>
+                <div style={{ display: 'none' }}>
+                  <GoogleLogin
+                    onSuccess={onSuccess}
+                    onError={onFailure}
+                    useOneTap={false}
+                  />
+                </div>
+              </GoogleOAuthProvider>
+            )}
+          </div>
         </div>
       </div>
+      
+      {showInput && (
+        <div className="room_modal_overlay" onClick={() => setShowInput(false)}>
+          <div className="room_modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Join Video Room</h3>
+            <input
+              className="room_input"
+              type="text"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Enter Room Code"
+              autoFocus
+            />
+            <div className="room_modal_actions">
+              <button className="btn_cancel" onClick={() => setShowInput(false)}>Cancel</button>
+              <button className="btn_join" onClick={handleJoinRoom}>Join Room</button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {AuthBtn && (
         <Auth
-        setEditCreateChanelBtn={setEditCreateChanelBtn}
-          setAuthBtn={setAuthBtn}
           User={CurrentUser}
+          setAuthBtn={setAuthBtn}
+          setEditCreateChanelBtn={setEditCreateChanelBtn}
         />
       )}
     </>
