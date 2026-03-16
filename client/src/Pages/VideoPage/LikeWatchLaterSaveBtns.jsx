@@ -44,7 +44,7 @@ function LikeWatchLaterSaveBtns({ vv, vid }) {
         (q) => q?.videoId === vid && q?.Viewer === CurrentUser?.result._id
       )
       .map((m) => setSAveVideo(true));
-  }, []);
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleSavedVideo = () => {
     if (CurrentUser) {

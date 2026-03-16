@@ -1,15 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-// import { saveAs } from 'file-saver';
-import { RiCamera2Fill } from 'react-icons/ri'; // Camera icon
 import './RoomPage.css';
 
 const RoomPage = () => {
   const { roomId } = useParams();
   const meetingContainer = useRef(null);
   const jitsiApi = useRef(null); // Store Jitsi instance
-  const [isRecording, setIsRecording] = useState(false);
-  let mediaRecorder = useRef(null);
+  const mediaRecorder = useRef(null);
 
   useEffect(() => {
     const loadJitsiScript = () => {
