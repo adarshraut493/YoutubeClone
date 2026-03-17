@@ -172,7 +172,7 @@ function VideoPage() {
           <div className="video_wrapper_videoPage">
             <video
               ref={videoRef}
-              src={`${process.env.REACT_APP_API_URL || "http://localhost:5500"}/${vv?.filePath}`}
+              src={vv?.filePath}
               className="video_ShowVideo_videoPage"
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}

@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls -la \"d:\\\\AdarshRaut_ytclone\\\\server\\\\models\"\" 2>&1 || echo \"Directory not found or empty \")"
+      "Bash(ls -la \"d:\\\\AdarshRaut_ytclone\\\\server\\\\models\"\" 2>&1 || echo \"Directory not found or empty \")",
+      "Bash(npm install:*)"
     ]
   }
 }

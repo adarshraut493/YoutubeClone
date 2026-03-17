@@ -33,8 +33,8 @@ function VideoUpload({ setVidUploadPage }) {
       alert("Please enter a title for the video");
     } else if (!videoFile) {
       alert("Please select a video file");
-    } else if (videoFile.size > 1000000) {
-      alert("Please select a video file smaller than 1 MB");
+    } else if (videoFile.size > 50000000) {
+      alert("Please select a video file smaller than 50 MB");
     } else {
       const fileData = new FormData();
       fileData.append("file", videoFile);
@@ -80,8 +80,8 @@ function VideoUpload({ setVidUploadPage }) {
             </span>
             <span className="vidupload_filesub">
               {videoFile
-                ? `${(videoFile.size / 1024).toFixed(1)} KB`
-                : "MP4 only · max 1 MB"}
+                ? `${(videoFile.size / 1024 / 1024).toFixed(1)} MB`
+                : "MP4 only · max 50 MB"}
             </span>
             <input
               id="vid_file_input"
