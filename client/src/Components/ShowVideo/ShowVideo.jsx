@@ -7,10 +7,10 @@ function ShowVideo({ vid }) {
   return (
     <>
       <Link to={`/videopage/${vid?._id}`}>
-        <video
-          src={`${process.env.REACT_APP_API_URL || "http://localhost:5500"}/${vid.filePath}`}
+        <img
+          src={vid?.filePath?.replace('/upload/', '/upload/so_0/').replace('.mp4', '.jpg')}
           className="video_ShowVideo"
-          preload="metadata"
+          alt={vid?.videoTitle}
         />
       </Link>
       <div className='video_description'>
